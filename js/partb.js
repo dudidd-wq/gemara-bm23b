@@ -75,7 +75,7 @@
     root.appendChild(list);
     root.appendChild(h('div', { class: 'btnrow' }, h('a', { class: 'btn', href: '#/b-words' }, '🃏 מִלִּים שֶׁל חֵלֶק ב'), h('a', { class: 'btn sec', href: '#/progress' }, '⭐ הַהִתְקַדְּמוּת שֶׁלִּי')));
     root.appendChild(h('details', { class: 'card' }, h('summary', null, 'ℹ️ מֵאַיִן הַטֶּקְסְט?'),
-      h('p', { class: 'small' }, 'טֶקְסְט הַגְּמָרָא הַמְּנֻקָּד: ' + d.source.gemara_hebrew + ' (ספריא). הַהֶסְבֵּרִים לְפִי שְׁטַיְינְזָלְץ וְרַשִׁ"י. הַסּוּגְיָא מַמְשִׁיכָה בְּדַף כ"ד ע"ב.')));
+      h('p', { class: 'small' }, 'טֶקְסְט הַגְּמָרָא הַמְּנֻקָּד: מַהֲדוּרַת William Davidson (ספריא). הַהֶסְבֵּרִים לְפִי שְׁטַיְינְזָלְץ וְרַשִׁ"י. הַסּוּגְיָא מַמְשִׁיכָה בְּדַף כ"ד ע"ב.')));
   }
 
   // ================= עמוד יחידה =================
@@ -173,8 +173,8 @@
     fin.addEventListener('click', function () {
       var r = (Object.keys(opened).length + Object.keys(seen).length) / (u.lines.length + tappable);
       var s = r >= 0.5 ? 3 : r >= 0.2 ? 2 : 1;
-      U.record(aid(u.id, 'learn'), s); fin.hidden = true;
-      out.appendChild(doneCard(d, u.id, 'learn', s, s < 3 ? 'רוֹצֶה עוֹד כּוֹכָב? פְּתַח עוֹד פְּשָׁטִים וְהַקֵּשׁ עַל עוֹד מִלִּים, וְלַחַץ שׁוּב.' : 'עָבַרְתָּ עַל כׇּל הַיְּחִידָה!'));
+      U.record(aid(u.id, 'learn'), s); fin.hidden = true; out.innerHTML = '';
+      out.appendChild(doneCard(d, u.id, 'learn', s, s < 3 ? 'רוֹצֶה עוֹד כּוֹכָב? פְּתַח עוֹד פְּשָׁטִים וְהַקֵּשׁ עַל עוֹד מִלִּים, וּלְחַץ שׁוּב.' : 'עָבַרְתָּ עַל כׇּל הַיְּחִידָה!'));
       setTimeout(function () { fin.hidden = false; }, 50);
       out.scrollIntoView({ behavior: 'smooth' });
     });
@@ -286,16 +286,18 @@
       up.addEventListener('click', function () { var p = el.previousElementSibling; if (p) ul.insertBefore(el, p); clearMarks(); });
       dn.addEventListener('click', function () { var n = el.nextElementSibling; if (n) ul.insertBefore(n, el); clearMarks(); });
       var pid = null;
-      handle.addEventListener('pointerdown', function (e) { pid = e.pointerId; try { handle.setPointerCapture(pid); } catch (x) {} el.classList.add('drag'); clearMarks(); e.preventDefault(); });
-      handle.addEventListener('pointermove', function (e) {
+      // מאזינים במסמך: הזזת ה-li ב-DOM מבטלת pointer capture, ואז הגרירה נעצרה אחרי צעד אחד
+      handle.addEventListener('pointerdown', function (e) { pid = e.pointerId; el.classList.add('drag'); clearMarks(); e.preventDefault();
+        document.addEventListener('pointermove', move); document.addEventListener('pointerup', end); document.addEventListener('pointercancel', end); });
+      var move = function (e) {
         if (pid !== e.pointerId) return;
         var y = e.clientY, sibs = Array.prototype.filter.call(ul.children, function (x) { return x !== el; }), before = null;
         for (var q = 0; q < sibs.length; q++) { var r = sibs[q].getBoundingClientRect(); if (y < r.top + r.height / 2) { before = sibs[q]; break; } }
         if (before) { if (el.nextElementSibling !== before) ul.insertBefore(el, before); } else if (ul.lastElementChild !== el) ul.appendChild(el);
         if (y < 70) window.scrollBy(0, -12); else if (y > window.innerHeight - 70) window.scrollBy(0, 12);
-      });
-      var end = function (e) { if (pid !== e.pointerId) return; pid = null; el.classList.remove('drag'); };
-      handle.addEventListener('pointerup', end); handle.addEventListener('pointercancel', end);
+      };
+      var end = function (e) { if (pid !== e.pointerId) return; pid = null; el.classList.remove('drag');
+        document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', end); document.removeEventListener('pointercancel', end); };
       return el;
     }
     sh.forEach(function (k) { ul.appendChild(li(k)); });
@@ -367,7 +369,7 @@
         h('div', { class: 'btnrow' },
           h('button', { class: 'btn green', type: 'button', id: 'bwKnew', onclick: function () { knew++; U.state.flashB[g.aramaic] = 2; U.save(); U.beep(true); i++; show(); } }, '✔️ יָדַעְתִּי'),
           h('button', { class: 'btn sec', type: 'button', id: 'bwNot', onclick: function () { U.state.flashB[g.aramaic] = 1; U.save(); i++; show(); } }, '🔁 עוֹד לֹא')));
-      var flip = h('button', { class: 'btn', type: 'button', id: 'bwFlip' }, '🔄 הַפֹךְ');
+      var flip = h('button', { class: 'btn', type: 'button', id: 'bwFlip' }, '🔄 הֲפֹךְ');
       flip.addEventListener('click', function () { back.hidden = false; flip.remove(); });
       box.appendChild(h('p', { class: 'center muted' }, (i + 1) + ' / ' + deck.length + ' · ⭐ ' + knew));
       box.appendChild(h('div', { class: 'card center' }, h('div', { class: 'ar big' }, g.niqqud), h('p', { class: 'small muted' }, 'מִתּוֹךְ יְחִידָה ' + g.unit.slice(1) + ', שׁוּרָה ' + g.line),

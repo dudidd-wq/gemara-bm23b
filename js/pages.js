@@ -130,7 +130,7 @@ var PAGES = {};
           h('div', { class: 'row' }, h('span', { class: 'ar' }, m.focus_niqqud), U.playBtn(m.audio, 'הַשְׁמָעַת הַמִּשְׁנָה')),
           h('div', { class: 'pshat' }, m.focus_explanation),
           h('details', null, h('summary', null, '📜 כׇּל הַמִּשְׁנָה'), h('p', { class: 'nq' }, m.full_niqqud)),
-          h('details', null, h('summary', null, 'רַשִׁ"י וְשְׁטֵיינְזַלְץ'), h('p', null, h('b', null, 'רש"י: '), m.rashi), h('p', null, h('b', null, 'שטיינזלץ: '), m.steinsaltz))));
+          h('details', null, h('summary', null, 'רַשִׁ"י וּשְׁטֵיינְזַלְץ'), h('p', null, h('b', null, 'רש"י: '), m.rashi), h('p', null, h('b', null, 'שטיינזלץ: '), m.steinsaltz))));
         card.appendChild(h('div', { class: 'muted' }, 'בַּגְּמָרָא:'));
         card.appendChild(lineBlock(d.texts.gemara_lines[0]));
       } else {
@@ -294,7 +294,7 @@ var PAGES = {};
     var v = d.video;
     var vid = h('video', { controls: true, playsinline: true, 'webkit-playsinline': true, preload: 'metadata', poster: 'icons/video-poster.jpg',
       'aria-label': 'הסרטון: מחרוזות של דגים', src: v.local_file });
-    vid.addEventListener('error', function () { U.toast('הַסִּרְטוֹן לֹא נִטְעַן – נַסּוּ אֶת הַקִּישּׁוּר לְדְרַייב'); });
+    vid.addEventListener('error', function () { U.toast('הַסִּרְטוֹן לֹא נִטְעַן – נַסּוּ אֶת הַקִּישּׁוּר לִדְרַייב'); });
     var list = h('ol', { class: 'chapters' });
     function mark() {
       var t = vid.currentTime, cur = -1;
@@ -325,7 +325,7 @@ var PAGES = {};
     });
     root.appendChild(h('div', { class: 'card' }, h('h2', { class: 'h3' }, '📑 פְּרָקִים'),
       h('p', { class: 'muted small' }, 'לְחִיצָה עַל פֶּרֶק קוֹפֶצֶת לַזְּמַן הַזֶּה בַּסִּרְטוֹן.'), list,
-      h('p', { class: 'small' }, h('a', { href: v.drive_url, target: '_blank', rel: 'noopener' }, '↗️ הַסִּרְטוֹן בְּגוּגְל דְּרַייב (גִּבּוּי)'))));
+      h('div', { class: 'btnrow' }, h('a', { class: 'btn sec sm', href: v.drive_url, target: '_blank', rel: 'noopener' }, '↗️ הַסִּרְטוֹן בְּגוּגְל דְּרַייב (גִּבּוּי)'))));
     root.appendChild(APP.finishBar('video'));
   };
 
@@ -369,7 +369,7 @@ var PAGES = {};
       h('div', { class: 'btnrow' },
         h('button', { class: 'btn', type: 'button', onclick: function () { window.print(); } }, '🖨️ הַדְפָּסָה'),
         h('a', { class: 'btn sec', href: d.answer_key.local_pdf, target: '_blank', rel: 'noopener' }, '📄 PDF'),
-        h('a', { class: 'btn sec', href: d.answer_key.drive_pdf_url, target: '_blank', rel: 'noopener' }, '↗️ PDF בְּדְרַייב'))));
+        h('a', { class: 'btn sec', href: d.answer_key.drive_pdf_url, target: '_blank', rel: 'noopener' }, '↗️ PDF בִּדְרַייב'))));
     root.appendChild(h('div', { class: 'card ws' }, ak));
   };
 

@@ -376,17 +376,19 @@
       up.addEventListener('click', function () { var p = el.previousElementSibling; if (p) ul.insertBefore(el, p); clearMarks(); });
       dn.addEventListener('click', function () { var n = el.nextElementSibling; if (n) ul.insertBefore(n, el); clearMarks(); });
       var pid = null;
-      handle.addEventListener('pointerdown', function (e) { pid = e.pointerId; try { handle.setPointerCapture(pid); } catch (x) {} el.classList.add('drag'); clearMarks(); e.preventDefault(); });
-      handle.addEventListener('pointermove', function (e) {
+      // מאזינים במסמך: הזזת ה-li ב-DOM מבטלת pointer capture, ואז הגרירה נעצרה אחרי צעד אחד
+      handle.addEventListener('pointerdown', function (e) { pid = e.pointerId; el.classList.add('drag'); clearMarks(); e.preventDefault();
+        document.addEventListener('pointermove', move); document.addEventListener('pointerup', end); document.addEventListener('pointercancel', end); });
+      var move = function (e) {
         if (pid !== e.pointerId) return;
         var y = e.clientY, sibs = Array.prototype.filter.call(ul.children, function (x) { return x !== el; });
         var before = null;
         for (var s = 0; s < sibs.length; s++) { var r = sibs[s].getBoundingClientRect(); if (y < r.top + r.height / 2) { before = sibs[s]; break; } }
         if (before) { if (el.nextElementSibling !== before) ul.insertBefore(el, before); } else if (ul.lastElementChild !== el) ul.appendChild(el);
         if (y < 70) window.scrollBy(0, -12); else if (y > window.innerHeight - 70) window.scrollBy(0, 12);
-      });
-      var end = function (e) { if (pid !== e.pointerId) return; pid = null; el.classList.remove('drag'); };
-      handle.addEventListener('pointerup', end); handle.addEventListener('pointercancel', end);
+      };
+      var end = function (e) { if (pid !== e.pointerId) return; pid = null; el.classList.remove('drag');
+        document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', end); document.removeEventListener('pointercancel', end); };
       return el;
     }
     function clearMarks() { Array.prototype.forEach.call(ul.children, function (x) { x.classList.remove('ok', 'almost'); }); }

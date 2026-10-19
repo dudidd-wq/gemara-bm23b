@@ -82,7 +82,7 @@ p{margin:.4em 0}
 .rule .lane{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;font-weight:700;font-size:19px;background:#f4f9ff;border-radius:14px;padding:10px}
 .pshat{background:#f2fbf6;border-right:5px solid var(--green);border-radius:10px;padding:8px 12px;margin:8px 0}
 details{margin:8px 0}
-summary{cursor:pointer;font-weight:700;color:var(--head);min-height:44px;display:flex;align-items:center}
+summary{cursor:pointer;font-weight:700;color:var(--head);min-height:48px;display:flex;align-items:center}
 /* אפשרויות */
 .opts{display:grid;gap:10px;margin-top:10px}
 .opt{min-height:56px;width:100%;text-align:right;padding:10px 16px;border-radius:14px;border:2px solid #cfe0f2;background:#fff;font-size:20px;cursor:pointer;line-height:1.45}
@@ -99,7 +99,7 @@ summary{cursor:pointer;font-weight:700;color:var(--head);min-height:44px;display
 .words{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:flex-start}
 .w{display:inline-flex;flex-direction:column;align-items:center;font-family:var(--nq);font-weight:800;font-size:30px;line-height:2;
   padding:0 6px;border-radius:10px;border:0;background:transparent;cursor:default}
-button.w{cursor:pointer;background:#f0f7ff;border-bottom:3px solid #bcd7f2}
+button.w{cursor:pointer;min-width:48px;justify-content:flex-start;background:#f0f7ff;border-bottom:3px solid #bcd7f2}
 button.w.seen{background:#e8f7ef;border-bottom-color:#8fd3b0}
 .w small{font-family:var(--nq);font-weight:600;font-size:17px;color:var(--tr);line-height:1.6;max-width:9em;text-align:center}
 .notr .w small{display:none}
@@ -170,10 +170,10 @@ button.w.seen{background:#e8f7ef;border-bottom-color:#8fd3b0}
 .order li.drag{opacity:.85;border-color:var(--accent);box-shadow:0 6px 16px rgba(0,0,0,.2);z-index:5;position:relative}
 .order li.ok{border-color:var(--green);background:var(--ok)}
 .order li.almost{border-color:#e39a2e;background:var(--almost)}
-.order .handle{font-size:26px;width:44px;height:48px;display:flex;align-items:center;justify-content:center;cursor:grab;touch-action:none;color:#6c7d9c}
+.order .handle{font-size:26px;width:48px;height:48px;flex:none;display:flex;align-items:center;justify-content:center;cursor:grab;touch-action:none;color:#6c7d9c}
 .order .txt{flex:1;font-family:var(--nq);font-weight:700;font-size:20px;line-height:1.7}
 .order .mv{display:flex;flex-direction:column;gap:4px}
-.order .mv button{width:44px;height:36px;border-radius:10px;border:1px solid #cfe0f2;background:#f4f9ff;font-size:16px;cursor:pointer}
+.order .mv button{width:48px;height:48px;border-radius:10px;border:1px solid #cfe0f2;background:#f4f9ff;font-size:16px;cursor:pointer}
 /* בדיקה עצמית */
 textarea{width:100%;min-height:110px;border-radius:12px;border:2px solid #cfe0f2;padding:10px;font-size:19px;line-height:1.6}
 .kp{display:flex;align-items:center;gap:10px;min-height:52px;padding:6px 10px;border-radius:12px;background:#f4f9ff;margin:6px 0;cursor:pointer;font-size:19px}
