@@ -1801,7 +1801,7 @@
  "video": {
   "drive_url": "https://drive.google.com/file/d/1C3YPelsJ03NrSDbL8Hz92gWBPNuYdNEU/view",
   "drive_embed_url": "https://drive.google.com/file/d/1C3YPelsJ03NrSDbL8Hz92gWBPNuYdNEU/preview",
-  "local_file": null,
+  "local_file": "video/lesson.mp4",
   "duration": 395.18,
   "duration_label": "6:35.2",
   "format": {

@@ -290,31 +290,42 @@ var PAGES = {};
   };
 
   // ================= סרטון =================
-  function tParam(sec) { var s = Math.floor(sec); return s ? '?t=' + s + 's' : ''; }
   PAGES.video = function (root, d) {
     var v = d.video;
-    var fr = h('iframe', { src: v.drive_embed_url, title: 'הסרטון: מחרוזות של דגים', allow: 'autoplay; fullscreen', allowfullscreen: true, loading: 'lazy', referrerpolicy: 'no-referrer' });
-    var openA = h('a', { class: 'btn sec sm', href: v.drive_url, target: '_blank', rel: 'noopener' }, '↗️ פְּתַח בְּגוּגְל דְּרַייב');
-    root.appendChild(h('div', { class: 'card' },
-      h('div', { class: 'vwrap', id: 'vwrap' }, fr),
-      h('p', { class: 'muted small' }, 'אוֹרֶךְ: ' + v.duration_label + ' · אִם הַסִּרְטוֹן לֹא נִפְתָּח כָּאן – לַחֲצוּ "פְּתַח בְּגוּגְל דְּרַייב".'),
-      h('div', { class: 'btnrow' }, openA,
-        h('button', { class: 'btn green sm', type: 'button', onclick: function () { U.record('video', 3); U.confetti(12); U.toast('⭐⭐⭐ ' + U.praise()); } }, '✔️ צָפִיתִי בַּסִּרְטוֹן'))));
+    var vid = h('video', { controls: true, playsinline: true, 'webkit-playsinline': true, preload: 'metadata', poster: 'icons/video-poster.jpg',
+      'aria-label': 'הסרטון: מחרוזות של דגים', src: v.local_file });
+    vid.addEventListener('error', function () { U.toast('הַסִּרְטוֹן לֹא נִטְעַן – נַסּוּ אֶת הַקִּישּׁוּר לְדְרַייב'); });
     var list = h('ol', { class: 'chapters' });
+    function mark() {
+      var t = vid.currentTime, cur = -1;
+      v.chapters.forEach(function (c, i) { if (t >= c.start - 0.01) cur = i; });
+      Array.prototype.forEach.call(list.querySelectorAll('button'), function (x, i) { x.classList.toggle('cur', i === cur); x.setAttribute('aria-current', i === cur ? 'true' : 'false'); });
+    }
+    vid.addEventListener('timeupdate', mark);
+    vid.addEventListener('ended', function () { U.record('video', 3); U.confetti(14); });
+    function jump(c) {
+      var go = function () {
+        try { vid.currentTime = c.start; } catch (e) {}
+        var p = vid.play(); if (p && p.catch) p.catch(function () {});
+        mark();
+      };
+      if (vid.readyState >= 1) go(); else { vid.addEventListener('loadedmetadata', function f() { vid.removeEventListener('loadedmetadata', f); go(); }); vid.load(); }
+      vid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    root.appendChild(h('div', { class: 'card' },
+      h('div', { class: 'vwrap', id: 'vwrap' }, vid),
+      h('p', { class: 'muted small' }, 'אוֹרֶךְ: ' + v.duration_label),
+      h('div', { class: 'btnrow' },
+        h('button', { class: 'btn green sm', type: 'button', onclick: function () { U.record('video', 3); U.confetti(12); U.toast('⭐⭐⭐ ' + U.praise()); } }, '✔️ צָפִיתִי בַּסִּרְטוֹן'))));
     v.chapters.forEach(function (c, i) {
-      var b = h('button', { type: 'button' },
+      var b = h('button', { type: 'button', 'data-start': c.start },
         h('span', { class: 't' }, c.start_label.replace(/\.\d$/, '')), h('span', null, c.title));
-      b.addEventListener('click', function () {
-        Array.prototype.forEach.call(list.querySelectorAll('button'), function (x) { x.classList.remove('cur'); });
-        b.classList.add('cur');
-        fr.src = v.drive_embed_url + tParam(c.start);
-        openA.href = v.drive_url + tParam(c.start);
-        document.getElementById('vwrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
+      b.addEventListener('click', function () { jump(c); });
       list.appendChild(h('li', null, b));
     });
     root.appendChild(h('div', { class: 'card' }, h('h2', { class: 'h3' }, '📑 פְּרָקִים'),
-      h('p', { class: 'muted small' }, 'לְחִיצָה עַל פֶּרֶק פּוֹתַחַת אֶת הַסִּרְטוֹן מֵהַזְּמַן הַזֶּה. אִם זֶה לֹא קוֹפֵץ – גְּרֹר אֶת הַסִּרְטוֹן לַזְּמַן שֶׁכָּתוּב.'), list));
+      h('p', { class: 'muted small' }, 'לְחִיצָה עַל פֶּרֶק קוֹפֶצֶת לַזְּמַן הַזֶּה בַּסִּרְטוֹן.'), list,
+      h('p', { class: 'small' }, h('a', { href: v.drive_url, target: '_blank', rel: 'noopener' }, '↗️ הַסִּרְטוֹן בְּגוּגְל דְּרַייב (גִּבּוּי)'))));
     root.appendChild(APP.finishBar('video'));
   };
 

@@ -1,6 +1,6 @@
 /* Service worker: עבודה בלי אינטרנט. כשמשנים קבצים – להעלות את VERSION. */
 'use strict';
-var VERSION = 'bm23b-v1';
+var VERSION = 'bm23b-v2';
 var FILES = [
  "./",
  "index.html",
@@ -16,6 +16,7 @@ var FILES = [
  "icons/icon.svg",
  "icons/icon-192.png",
  "icons/icon-512.png",
+ "icons/video-poster.jpg",
  "docs/answer_key.pdf",
  "audio/05ef36b073b15a.mp3",
  "audio/0f6745de2490ba.mp3",
@@ -67,6 +68,8 @@ function rangeResponse(req, res) {
 self.addEventListener('fetch', function (e) {
   var req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
+  // הסרטון (40MB) לא נשמר במטמון – תמיד מהרשת, כולל בקשות Range
+  if (/\/video\//.test(new URL(req.url).pathname)) return;
   var isData = /\/data\/site_data\.json$/.test(new URL(req.url).pathname);
   if (isData) { // רשת קודם (תוכן מעודכן), ואם אין – מהמטמון
     e.respondWith(fetch(req).then(function (r) { var cp = r.clone(); caches.open(VERSION).then(function (c) { c.put(req, cp); }); return r; })

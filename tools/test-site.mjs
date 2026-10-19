@@ -40,14 +40,16 @@ ok('worksheet spelling ולהוי / דציידי kept', q5.items.some(i => i.wor
 ok('word bank: 10 words in sheet order, ושיהי\'ה with geresh', ws.word_bank.join(',') === "עופרת,ככה,שכל העולם,בקשר,מדוע,שאלו,ושיהי'ה,של דייגים,חתיכות,ממנו");
 ok('5 worksheet questions', ws.questions.length === 5);
 
-const srv = await start(0); BASE = `http://127.0.0.1:${srv.address().port}/`;
+const srv = process.env.BASE_URL ? null : await start(0);
+BASE = process.env.BASE_URL ? process.env.BASE_URL.replace(/\/?$/, '/') : `http://127.0.0.1:${srv.address().port}/`;
+console.log('BASE', BASE);
 const browser = await chromium.launch({ executablePath: CHROME, args: ['--autoplay-policy=no-user-gesture-required'] });
 const UA = 'Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36';
 const ctx = await browser.newContext({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 2.625, isMobile: true, hasTouch: true, userAgent: UA, locale: 'he-IL' });
 const page = await ctx.newPage();
 const errors = [], bad = [];
 page.on('pageerror', e => errors.push(e.message));
-page.on('console', m => { if (m.type() === 'error' && !/drive\.google|401|403/.test(m.text() + (m.location().url || ''))) errors.push('console: ' + m.text()); });
+page.on('console', m => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
 page.on('response', r => { if (r.url().startsWith(BASE) && r.status() >= 400) bad.push(r.status() + ' ' + r.url()); });
 page.on('dialog', d => d.accept());
 const shot = async (name) => { await page.waitForTimeout(250); await page.screenshot({ path: path.join(SHOTS, name) }); };
@@ -241,16 +243,26 @@ await page.evaluate(() => document.querySelector('.card.q').scrollIntoView());
 await shot('11-self-check.png');
 ok('self check: 3 prompts completed', await page.evaluate(() => U.state.activities.self_check && U.state.activities.self_check.stars === 3));
 
-// 14) סרטון
+// 14) סרטון (קובץ מקומי, נגן מובנה)
+ok('video file exists, < 50MB', fs.existsSync(path.join(ROOT, data.video.local_file)) && fs.statSync(path.join(ROOT, data.video.local_file)).size < 50e6);
+ok('video NOT in service-worker precache', !swFiles.some(f => /\.mp4$/.test(f)));
 await go('video');
-const src0 = await page.locator('iframe').getAttribute('src');
-ok('video: Drive /preview iframe embedded', src0 === data.video.drive_embed_url);
+ok('video: native <video controls playsinline preload=metadata> with local file', await page.evaluate((f) => { const v = document.querySelector('video'); return !!v && v.controls && v.hasAttribute('playsinline') && v.preload === 'metadata' && v.getAttribute('src') === f && !document.querySelector('iframe'); }, data.video.local_file));
+const meta = await page.evaluate(() => new Promise(r => { const v = document.querySelector('video'); if (v.readyState >= 1) r(v.duration); v.addEventListener('loadedmetadata', () => r(v.duration)); v.addEventListener('error', () => r(-1)); setTimeout(() => r(-2), 20000); }));
+ok('video: metadata loads, duration ≈ 395s', Math.abs(meta - data.video.duration) < 1, 'duration=' + meta);
 ok('video: 19 chapters listed with timestamps', (await page.locator('.chapters button').count()) === data.video.chapters.length);
-await page.locator('.chapters button').nth(5).click();
-const src1 = await page.locator('iframe').getAttribute('src');
-ok('video: chapter click points iframe to ?t=<sec>s', src1 === data.video.drive_embed_url + '?t=' + Math.floor(data.video.chapters[5].start) + 's', src1);
-ok('video: "open in Drive" fallback link', (await page.locator(`a[href^="${data.video.drive_url}"]`).count()) === 1);
+const jumps = [];
+for (const i of [5, 13, 18, 0]) {
+  await page.locator('.chapters button').nth(i).click();
+  const r = await page.evaluate(() => new Promise(res => { const v = document.querySelector('video'); const t0 = performance.now();
+    (function poll() { if ((!v.seeking && v.readyState >= 2) || performance.now() - t0 > 15000) res({ t: v.currentTime, paused: v.paused, cur: [...document.querySelectorAll('.chapters button')].findIndex(b => b.classList.contains('cur')) }); else setTimeout(poll, 50); })(); }));
+  jumps.push({ i, want: data.video.chapters[i].start, got: +r.t.toFixed(2), playing: !r.paused, cur: r.cur });
+}
+ok('video: chapter buttons seek to exact start and play', jumps.every(j => j.got >= j.want - 0.05 && j.got < j.want + 1.5 && j.playing && j.cur === j.i), JSON.stringify(jumps));
+await page.evaluate(() => document.querySelector('video').pause());
+ok('video: optional Drive fallback link', (await page.locator(`a[href="${data.video.drive_url}"]`).count()) === 1);
 await page.locator('button', { hasText: 'צָפִיתִי' }).click();
+await page.evaluate(() => window.scrollTo(0, 0));
 await shot('12-video.png');
 
 // 15) התקדמות נשמרת אחרי טעינה מחדש, מסך סיום, איפוס
@@ -289,7 +301,7 @@ ok('PWA: service worker active, site + audio work offline', swOk && offline >= 1
 ok('no JS errors during the whole run', errors.length === 0, errors.join(' | '));
 ok('no 4xx/5xx for local files', bad.length === 0, bad.join(' | '));
 
-await browser.close(); srv.close();
+await browser.close(); if (srv) srv.close();
 fs.writeFileSync(path.join(SHOTS, 'test-results.json'), JSON.stringify(results, null, 1));
 console.log(`\n${results.length - failed}/${results.length} passed`);
 process.exit(failed ? 1 : 0);
