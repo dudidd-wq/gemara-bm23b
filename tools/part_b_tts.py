@@ -114,10 +114,15 @@ def gen(only):
     with ThreadPoolExecutor(3) as ex: list(ex.map(run, jobs))
     if stop['q']: print('STOPPED ON QUOTA:', stop['q']); sys.exit(2)
 
+GATE = os.path.join(ROOT, 'tools/part_b_audio_gate.json')
+def load_gate(): return json.load(open(GATE, encoding='utf-8')) if os.path.exists(GATE) else {}
 def dur_of(p): return float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', p]).decode().strip())
 def encode():
     out, missing, tot = {}, [], 0.0
+    gate = load_gate()
     for cid, kind, text in plan():
+        if kind == 'gemara' and gate.get(cid, {}).get('status') not in ('pass', 'approved'):
+            continue  # שורות גמרא: רק קטעים שעברו את בדיקת התמלול (או אושרו ע"י דודי)
         k = key(text); src = f'{D}/{k}.mp3'
         if not os.path.exists(src): missing.append(cid); continue
         dst = os.path.join(ROOT, 'audio/b', k + '.mp3')
@@ -125,6 +130,9 @@ def encode():
             subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', src, '-ac', '1', '-ar', '44100', '-c:a', 'libmp3lame', '-b:a', '48k', dst], check=True)
         d = round(dur_of(dst), 2); tot += d
         out[cid] = {'file': 'audio/b/' + k + '.mp3', 'start': 0, 'end': d, 'kind': kind, 'tts_text': text}
+    used = {os.path.basename(c['file']) for c in out.values()}
+    for f in os.listdir(os.path.join(ROOT, 'audio/b')):
+        if f not in used: os.remove(os.path.join(ROOT, 'audio/b', f))
     json.dump({'voice': VOICE, 'model': MODEL, 'clips': out}, open(os.path.join(ROOT, 'data/part_b_audio.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
     print('encoded', len(out), 'missing', len(missing), 'total sec', round(tot, 1), missing[:10])
 
