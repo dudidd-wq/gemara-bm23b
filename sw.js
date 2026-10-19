@@ -1,6 +1,8 @@
 /* Service worker: עבודה בלי אינטרנט. כשמשנים קבצים – להעלות את VERSION. */
 'use strict';
-var VERSION = 'bm23b-v3';
+var VERSION = 'bm23b-v4';
+// קריינות חלק ב (7MB) – לא בהתקנה, נשמרת במטמון נפרד בפעם הראשונה שמשמיעים קטע
+var AUDIO_B = 'bm23b-audio-b-v1';
 var FILES = [
  "./",
  "index.html",
@@ -13,6 +15,7 @@ var FILES = [
  "js/app.js",
  "data/site_data.json",
  "data/part_b.json",
+ "data/part_b_audio.json",
  "fonts/Rubik-Hebrew.woff2",
  "fonts/FrankRuhlLibre-Hebrew.woff2",
  "icons/icon.svg",
@@ -52,7 +55,7 @@ self.addEventListener('install', function (e) {
 });
 self.addEventListener('activate', function (e) {
   e.waitUntil(caches.keys().then(function (ks) {
-    return Promise.all(ks.filter(function (k) { return k !== VERSION; }).map(function (k) { return caches.delete(k); }));
+    return Promise.all(ks.filter(function (k) { return k !== VERSION && k !== AUDIO_B; }).map(function (k) { return caches.delete(k); }));
   }).then(function () { return self.clients.claim(); }));
 });
 // בקשות Range (שמע) – מחזירים 206 מתוך הקובץ השמור, כדי שקפיצה לזמן בקטע תעבוד גם בלי רשת
@@ -72,10 +75,22 @@ self.addEventListener('fetch', function (e) {
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
   // הסרטון (40MB) לא נשמר במטמון – תמיד מהרשת, כולל בקשות Range
   if (/\/video\//.test(new URL(req.url).pathname)) return;
-  var isData = /\/data\/(site_data|part_b)\.json$/.test(new URL(req.url).pathname);
+  var isData = /\/data\/(site_data|part_b|part_b_audio)\.json$/.test(new URL(req.url).pathname);
   if (isData) { // רשת קודם (תוכן מעודכן), ואם אין – מהמטמון
     e.respondWith(fetch(req).then(function (r) { var cp = r.clone(); caches.open(VERSION).then(function (c) { c.put(req, cp); }); return r; })
       .catch(function () { return caches.match(req, { ignoreSearch: true }); }));
+    return;
+  }
+  if (/\/audio\/b\//.test(new URL(req.url).pathname)) { // לפי דרישה: מורידים את כל הקובץ פעם אחת ושומרים
+    e.respondWith(caches.open(AUDIO_B).then(function (c) {
+      return c.match(req.url, { ignoreSearch: true }).then(function (hit) {
+        if (hit) return req.headers.has('range') ? rangeResponse(req, hit) : hit;
+        return fetch(req.url).then(function (r) {
+          if (!r.ok) return r;
+          return c.put(req.url, r.clone()).then(function () { return req.headers.has('range') ? rangeResponse(req, r) : r; });
+        }).catch(function () { return fetch(req); });
+      });
+    }));
     return;
   }
   e.respondWith(caches.match(req, { ignoreSearch: true, ignoreVary: true }).then(function (hit) {

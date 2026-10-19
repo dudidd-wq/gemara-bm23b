@@ -227,3 +227,4 @@ textarea{width:100%;min-height:110px;border-radius:12px;border:2px solid #cfe0f2
 .flowlist li{margin:6px 0;line-height:1.7}
 .tabs a.btn{text-decoration:none;text-align:center}
 .prow.done{background:var(--ok)}
+.gline.playing{background:#fff4c2;border-radius:12px}

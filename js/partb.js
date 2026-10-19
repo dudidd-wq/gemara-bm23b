@@ -19,8 +19,10 @@
   var B = null, loading = null;
   function load() {
     if (B) return Promise.resolve(B);
-    if (!loading) loading = fetch('data/part_b.json').then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(function (d) { B = d; return d; }).catch(function (e) { loading = null; throw e; });
+    if (!loading) loading = Promise.all([
+      fetch('data/part_b.json').then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }),
+      fetch('data/part_b_audio.json').then(function (r) { return r.ok ? r.json() : { clips: {} }; }).catch(function () { return { clips: {} }; })
+    ]).then(function (x) { B = x[0]; B.audio = (x[1] && x[1].clips) || {}; return B; }).catch(function (e) { loading = null; throw e; });
     return loading;
   }
   function withData(root, fn) {
@@ -54,6 +56,7 @@
       again ? h('div', { class: 'btnrow' }, h('button', { class: 'btn sec', type: 'button', onclick: again }, '🔁 עוֹד פַּעַם')) : null,
       h('div', { class: 'btnrow' }, h('a', { class: 'btn green', href: n.href }, 'הַבָּא: ' + n.t + ' ←'), h('a', { class: 'btn sec', href: '#/b' }, '📜 לִרְשִׁימַת הַיְּחִידוֹת')));
   }
+  function clip(d, cid) { var c = d.audio && d.audio[cid]; return c ? { file: c.file, start: 0, end: null } : null; }
   function tag(type) { return h('span', { class: 'tag ' + (TAG[type] || '') }, type); }
 
   // ================= רשימת היחידות =================
@@ -96,7 +99,34 @@
 
   function learnTab(root, d, u) {
     var seen = {}, opened = {}, tappable = 0, recorded = false;
-    root.appendChild(h('div', { class: 'card mish' }, h('p', null, u.intro),
+    var ci = clip(d, u.id + '_intro');
+    var seq = [], seqLine = [];
+    if (ci) { seq.push(ci); seqLine.push(-1); }
+    u.lines.forEach(function (l, li) { [clip(d, u.id + '_g' + l.n), clip(d, u.id + '_e' + l.n)].forEach(function (c) { if (c) { seq.push(c); seqLine.push(li); } }); });
+    var allBtn = null;
+    if (seq.length) {
+      allBtn = h('button', { class: 'btn green', type: 'button', id: 'playUnit', 'aria-pressed': 'false' }, '▶️ לְהַשְׁמִיעַ אֶת כׇּל הַיְּחִידָה');
+      var follow = 0;
+      allBtn.addEventListener('click', function () {
+        U.play(seq, allBtn);
+        clearInterval(follow);
+        var last = -2;
+        follow = setInterval(function () {
+          var a = U._audio(), on = allBtn.classList.contains('on') && document.body.contains(allBtn);
+          var li = -2;
+          if (on && a && a.src) { var k = seq.map(function (c) { return new URL(c.file, document.baseURI).href; }).indexOf(a.src); if (k >= 0) li = seqLine[k]; }
+          if (li !== last) {
+            Array.prototype.forEach.call(wrap.querySelectorAll('.gline.playing'), function (x) { x.classList.remove('playing'); });
+            if (li >= 0) { var g = wrap.children[li]; g.classList.add('playing'); g.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+            last = li;
+          }
+          if (!on) { clearInterval(follow); allBtn.textContent = '▶️ לְהַשְׁמִיעַ אֶת כׇּל הַיְּחִידָה'; }
+          else allBtn.textContent = '⏹️ לַעֲצֹר';
+        }, 250);
+      });
+    }
+    root.appendChild(h('div', { class: 'card mish' }, h('div', { class: 'row sp' }, h('p', null, u.intro), ci ? U.playBtn(ci, 'הַשְׁמָעַת הַפְּתִיחָה') : null),
+      allBtn ? h('div', { class: 'btnrow' }, allBtn) : null,
       h('p', { class: 'small muted' }, '👆 הַקֵּשׁ עַל מִלָּה מְסֻמֶּנֶת כְּדֵי לִרְאוֹת אֶת הַתַּרְגּוּם. כַּפְתּוֹר ', h('b', null, 'פְּשָׁט'), ' מַסְבִּיר אֶת הַשּׁוּרָה.')));
     var wrap = h('div', { class: 'card notr', id: 'bLines' });
     var cb = h('input', { type: 'checkbox', id: 'bTr' });
@@ -121,7 +151,10 @@
       var ps = h('div', { class: 'pshat', hidden: true }, tag(l.role), ' ', l.explanation);
       var pb = h('button', { class: 'btn sec sm pb', type: 'button', 'aria-expanded': 'false' }, '💬 פְּשָׁט');
       pb.addEventListener('click', function () { ps.hidden = !ps.hidden; pb.setAttribute('aria-expanded', String(!ps.hidden)); opened[li] = 1; upd(); });
-      wrap.appendChild(h('div', { class: 'gline' }, h('div', { class: 'row' }, h('span', { class: 'num' }, l.n + '.'), words), say, h('div', { class: 'row' }, pb), ps));
+      var cg = clip(d, u.id + '_g' + l.n), ce = clip(d, u.id + '_e' + l.n);
+      if (ce) ps.appendChild(h('div', { class: 'row' }, U.playBtn(ce, 'הַשְׁמָעַת הַהֶסְבֵּר לְשׁוּרָה ' + l.n), h('span', { class: 'small muted' }, 'שְׁמַע אֶת הַהֶסְבֵּר')));
+      wrap.appendChild(h('div', { class: 'gline' }, h('div', { class: 'row' }, h('span', { class: 'num' }, l.n + '.'), words), say,
+        h('div', { class: 'row' }, pb, cg ? U.playBtn(cg, 'הַשְׁמָעַת שׁוּרָה ' + l.n) : null), ps));
     });
     root.appendChild(wrap); root.appendChild(info);
     // מהלך הסוגיא

@@ -17,6 +17,7 @@ const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/site_data.json'), 
 const partB = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/part_b.json'), 'utf8'));
 const sefaria = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/sefaria/bm_23b_24a.json'), 'utf8'));
 const B_TABS = ['learn', 'quiz', 'match', 'order', 'self'];
+const audioB = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/part_b_audio.json'), 'utf8')).clips;
 const strip = (x) => String(x || '').replace(/[\u0591-\u05C7]/g, '').replace(/\s+/g, ' ').trim();
 const ROUTES = ['', 'learn', 'text', 'flashcards', 'fill_in', 'multiple_choice', 'matching', 'true_false', 'order', 'self_check', 'video', 'answers', 'progress'];
 
@@ -31,13 +32,23 @@ const files = new Set();
 (function walk(o) { if (Array.isArray(o)) o.forEach(walk); else if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) { if (typeof v === 'string' && /^audio\/.+\.mp3$/.test(v)) files.add(v); else walk(v); } })(data);
 const missing = [...files].filter(f => !fs.existsSync(path.join(ROOT, f)));
 ok(`all ${files.size} audio files referenced in site_data.json exist`, !missing.length, missing.join(', '));
-const extra = fs.readdirSync(path.join(ROOT, 'audio')).filter(f => !files.has('audio/' + f));
+const extra = fs.readdirSync(path.join(ROOT, 'audio')).filter(f => f !== 'b' && !files.has('audio/' + f));
 ok('no unreferenced audio files', !extra.length, extra.join(', '));
 // כל הקבצים ב-service worker קיימים
 const sw = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
 const swFiles = JSON.parse(/var FILES = (\[[\s\S]*?\]);/.exec(sw)[1]);
 const swMissing = swFiles.filter(f => f !== './' && !fs.existsSync(path.join(ROOT, f)));
 ok('service-worker precache list matches files', !swMissing.length && files.size === swFiles.filter(f => f.startsWith('audio/')).length, swMissing.join(','));
+// חלק ב: קריינות
+{
+  const need = partB.units.flatMap(u => [u.id + '_intro', ...u.lines.flatMap(l => [`${u.id}_g${l.n}`, `${u.id}_e${l.n}`])]);
+  const miss = need.filter(c => !audioB[c] || !fs.existsSync(path.join(ROOT, audioB[c].file)));
+  const onDisk = fs.readdirSync(path.join(ROOT, 'audio/b')), used = new Set(Object.values(audioB).map(c => c.file));
+  ok(`part B narration: all ${need.length} clips (intro + every Gemara line + every explanation) exist, none unreferenced`, !miss.length && onDisk.every(f => used.has('audio/b/' + f)), miss.slice(0, 5).join(','));
+  ok('part B narration is NOT precached (on-demand cache in SW)', !swFiles.some(f => f.startsWith('audio/b/')) && /AUDIO_B/.test(sw) && swFiles.includes('data/part_b_audio.json'));
+  const big = onDisk.map(f => fs.statSync(path.join(ROOT, 'audio/b', f)).size).reduce((a, b) => a + b, 0);
+  ok('part B narration small mono MP3 (total < 10MB)', big < 10e6, (big / 1e6).toFixed(1) + 'MB');
+}
 // דף העבודה: איות כמו בדף
 const ws = data.worksheet, q5 = ws.questions.find(q => q.id === '5');
 ok('worksheet spelling ולהוי / דציידי kept', q5.items.some(i => i.word === 'ולהוי') && q5.items.some(i => i.word === 'דציידי') && !JSON.stringify(ws.questions).includes('ולחזי') && !JSON.stringify(data.quiz).includes('ולחזי'));
@@ -308,6 +319,30 @@ const goB = async (r) => { await page.goto(BASE + '#/' + r); await page.waitForF
   const say = await page.locator('#bLines .hint:not([hidden])').first().innerText();
   await page.locator('#bTr').check();
   await page.evaluate(() => window.scrollTo(0, 0)); await shot('17-part-b-learn.png');
+  // קריינות: כפתור לכל שורה, הסבר, פתיחה, ומצב "כל היחידה"
+  const u1 = partB.units[0];
+  const nPlay = await page.locator('#bLines .gline > .row .play').count(), nExpl = await page.locator('#bLines .pshat .play').count();
+  const lineAudio = await page.evaluate(async () => {
+    const b = document.querySelectorAll('#bLines .gline > .row .play')[1]; b.click();
+    const a = U._audio(); const t0 = performance.now();
+    while (performance.now() - t0 < 8000 && !(a && !a.paused && a.currentTime > 0.3)) await new Promise(r => setTimeout(r, 50));
+    const r = { src: a && a.src, t: a && a.currentTime, playing: a && !a.paused }; U.stop(); return r;
+  });
+  ok('part B: 🔊 per Gemara line + per explanation; line clip plays', nPlay === u1.lines.length && nExpl === u1.lines.length && lineAudio.playing && lineAudio.src.endsWith(audioB['b1_g2'].file), `play=${nPlay} expl=${nExpl} ${JSON.stringify(lineAudio)}`);
+  const seqRes = await page.evaluate(async () => {
+    const btn = document.getElementById('playUnit'); btn.click();
+    const a = U._audio(); const wait = async (f, ms) => { const t0 = performance.now(); while (performance.now() - t0 < ms && !f()) await new Promise(r => setTimeout(r, 50)); return f(); };
+    await wait(() => !a.paused && a.currentTime > 0.2, 8000);
+    const first = a.src;
+    a.currentTime = Math.max(0, a.duration - 0.15); // מדלגים לסוף הפתיחה
+    await wait(() => a.src !== first && !a.paused, 8000);
+    await new Promise(r => setTimeout(r, 600));
+    const hl = [...document.querySelectorAll('#bLines .gline')].findIndex(g => g.classList.contains('playing'));
+    const res = { first, second: a.src, hl, label: btn.textContent };
+    btn.click(); await new Promise(r => setTimeout(r, 400)); res.stopped = a.paused; return res;
+  });
+  ok('part B: "play whole unit" plays intro → line 1 in sequence, highlights the line, stop works', seqRes.first.endsWith(audioB['b1_intro'].file) && seqRes.second.endsWith(audioB['b1_g1'].file) && seqRes.hl === 0 && seqRes.stopped, JSON.stringify(seqRes));
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.click('#learnDone');
   let pb = await page.evaluate(() => JSON.parse(localStorage.getItem('bm23b_progress_v1')).activities);
   ok('part B learn: word tap shows translation, pshat opens, learn recorded 3★', /=/.test(say) && pb['b:b1:learn'] && pb['b:b1:learn'].stars === 3, `words=${nW} pshat=${nP} say=${say}`);
@@ -378,15 +413,18 @@ ok('print answer key fits one A4 page', pages === 1, 'pages=' + pages);
 await go('');
 const swOk = await page.evaluate(async () => { const r = await navigator.serviceWorker.ready; return !!r.active; });
 await page.waitForTimeout(1500);
+await page.evaluate(async (f) => { await fetch(f, { headers: { Range: 'bytes=0-' } }).then(r => r.arrayBuffer()); }, audioB['b3_g1'].file);
+await page.waitForTimeout(500);
 await ctx.setOffline(true);
 await page.reload(); await page.waitForSelector('#app > :not(.loading)', { timeout: 8000 }).catch(() => {});
 const offline = await page.evaluate(() => document.querySelectorAll('.tile').length);
 await go('flashcards').catch(() => {});
 await goB('b/b3/learn').catch(() => {});
 const offB = await page.evaluate(() => document.querySelectorAll('#bLines .gline').length);
+const offBA = await page.evaluate(async (f) => new Promise(r => { const a = new Audio(); a.onloadedmetadata = () => r(a.duration); a.onerror = () => r(-1); a.src = f; }), audioB['b3_g1'].file);
 const offAudio = await page.evaluate(async (f) => new Promise(r => { const a = new Audio(); a.onloadedmetadata = () => r(a.duration); a.onerror = () => r(-1); a.src = f; }), [...files][0]);
 await ctx.setOffline(false);
-ok('PWA: service worker active, site + audio + part B work offline', swOk && offline >= 10 && offAudio > 0 && offB > 0, `tiles=${offline} audio=${offAudio} partB-lines=${offB}`);
+ok('PWA: service worker active, site + audio + part B work offline', swOk && offline >= 10 && offAudio > 0 && offB > 0 && offBA > 0, `tiles=${offline} audio=${offAudio} partB-lines=${offB} partB-audio(on-demand)=${offBA}`);
 
 ok('no JS errors during the whole run', errors.length === 0, errors.join(' | '));
 ok('no 4xx/5xx for local files', bad.length === 0, bad.join(' | '));
