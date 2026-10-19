@@ -1,0 +1,1268 @@
+{
+ "b1_intro": {
+  "model": "scribe_v1",
+  "stt": "במשנה כתוב שגם מי שמוצא חתיכות של בשר הן שלו. הגמרא שואלת למה אין בהן סימן?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "8eb89796d0bc1b"
+ },
+ "b1_e1": {
+  "model": "scribe_v1",
+  "stt": "במשנה שנינו חתיכות של בשר הרי אלו של המוצא",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "24e7eaf0f9832d"
+ },
+ "b1_e2": {
+  "model": "scribe_v1",
+  "stt": "למה? שהמשקל של החתיכה יהיה סימן. הבעלים יגיד: \"החתיכה שלי שקלה כך וכך\".",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "0386ceab7352b9"
+ },
+ "b1_e3": {
+  "model": "scribe_v1",
+  "stt": "מדובר במשקל ששווה אצל כולם. הקצבים רגילים לחתוך את כל החתיכות באותו משקל, לכן המשקל אינו סימן",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "ee24e88a43f64a"
+ },
+ "b1_e4": {
+  "model": "scribe_v1",
+  "stt": "שהחתיכה עצמה תהיה סימן. הבעלים יגיד מאיזה חלק של הבהמה היא, מהצוואר או מהירך",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "37e067b3dc988a"
+ },
+ "b1_e5": {
+  "model": "scribe_v1",
+  "stt": "הרי שנינו בברייתא. מי שמצא חתיכות של דגים או דג נשוח חייב להכריז. משמע שבחתיכות דגים יש סימן, כי אפשר לומר מאיזה חלק של הדג הן",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "10060f53501f50"
+ },
+ "b1_e6": {
+  "model": "scribe_v1",
+  "stt": "המשך הברייתא. מי שמצא חביות של יין, של שמן, של תבואה, של גרוגרות או של זיתים הן שלו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "221a7e2edbe6d7"
+ },
+ "b1_e7": {
+  "model": "scribe_v1",
+  "stt": "עונה הגמרא: כאן בברייתא של חתיכות הדגים. במה מדובר?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "612efa9bdb456a"
+ },
+ "b1_e8": {
+  "model": "scribe_v1",
+  "stt": "כשיש סימן בצורת החיתוך, החתיכה לא נחתכה כמו שכולם חותכים",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "ab899a9c4a859b"
+ },
+ "b1_e9": {
+  "model": "scribe_v1",
+  "stt": "כמו רבה בר רב הונא, שהיה חותך את החתיכה בצורה של שלוש פינות, משולש",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "9c76e5fa5533e8"
+ },
+ "b1_e10": {
+  "model": "scribe_v1",
+  "stt": "וגם הלשון של הברייתא מדויקת כך. היא כתבה את החתיכות ליד דג נשוך שיש בו סימן ברור",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "0422d4c1885c4e"
+ },
+ "b1_e11": {
+  "model": "scribe_v1",
+  "stt": "למד מזה. הסימן בחתיכות הדגים הוא צורת החיתוך ולא המקום שממנו נחתכו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "90fc6c9d17bb30"
+ },
+ "b2_intro": {
+  "model": "scribe_v1",
+  "stt": "ברייתא אומרת שחביות יין של המוצא, אבל משנה אומרת שעל כדי יין חייב להכריז. איך זה מסתדר?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "0f68abfa84f861"
+ },
+ "b2_e1": {
+  "model": "scribe_v1",
+  "stt": "החכם אמר בברייתא: מי שמצא חביות של יין, שמן, תבואה, גרוגרות או זיתים הן שלו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "8d8354452141da"
+ },
+ "b2_e2": {
+  "model": "scribe_v2",
+  "stt": "והרי שאיננו במשנה בהמשך הפרק מי שמצא כדים של יין או של שמן חייב להכריז",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 0.981,
+  "strict_flag": [
+   "שנינו"
+  ],
+  "status": "pass",
+  "key": "70a4fc02f6a691"
+ },
+ "b2_e3": {
+  "model": "scribe_v1",
+  "stt": "רבי זירא אמר בשם רב. המשנה מדברת בחבית רשומה שסגרו אותה בטיט וכל אחד עושה את זה אחרת. זה סימן",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "ab8ca35713ae32"
+ },
+ "b2_e4": {
+  "model": "scribe_v1",
+  "stt": "מזה משמע שהברייתא מדברת בחבית פתוחה",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "54e3f4a1b6fad4"
+ },
+ "b2_e5": {
+  "model": "scribe_v2",
+  "stt": "אבל אם היא פתוחה, הבעלים השאיר אותה כך בידיעה, עבידה מדעת, וזה ברור שהיא של המוצא. למה צריך לכתוב את זה?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "f0677774b5a30f"
+ },
+ "b2_e6": {
+  "model": "scribe_v1",
+  "stt": "רב הושעיה אמר: הברייתא מדברת בחבית שהמכסה מונח עליה, אבל לא סגרו אותה בטיט. אין בה סימן, וגם אינה אבידה מדעת",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "21e8daff2b58b8"
+ },
+ "b2_e7": {
+  "model": "scribe_v1",
+  "stt": "אביי אמר תירוץ אחר. אפשר לומר ששתיהן, המשנה והברייתא, מדברות בחבית רשומה ואין קושיה",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "55d01338d67e62"
+ },
+ "b2_e8": {
+  "model": "scribe_v1",
+  "stt": "המשנה חייב להכריז לפני שפתחו את מחסני היין למכירה. אז רק אדם אחד עושה רישום כזה וזה סימן",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "3242402dc01051"
+ },
+ "b2_e9": {
+  "model": "scribe_v1",
+  "stt": "הברייתא של המוצא. אחרי שפתחו את המחסנים ומכרו חביות להרבה אנשים, אז הרישום כבר לא מראה של מי החבית",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "14c491e3b099f5"
+ },
+ "b2_e10": {
+  "model": "scribe_v1",
+  "stt": "כמו שקרה לרב יעקב בר אבא, הוא מצא חבית של יין אחרי שנפתחו האוצרות",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "2e6ee601680705"
+ },
+ "b2_e11": {
+  "model": "scribe_v1",
+  "stt": "הוא בא לפני אביי לשאול, ואביי אמר לו: לך, קח אותה לעצמך",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "d136b0fbf663bc"
+ },
+ "b3_intro": {
+  "model": "scribe_v1",
+  "stt": "רב ביבי שואל את רב נחמן: אם אני יודע איפה איבדתי, האם המקום נחשב סימן?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "bcd95c064fb7c1"
+ },
+ "b3_e1": {
+  "model": "scribe_v1",
+  "stt": "רב ביבי שאל את רב נחמן",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "73a0ea78ff09b3"
+ },
+ "b3_e2": {
+  "model": "scribe_v1",
+  "stt": "האם המקום שבו היה החפץ נחשב סימן או שאינו נחשב סימן?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "c3caeee1ed2d7b"
+ },
+ "b3_e3": {
+  "model": "scribe_v1",
+  "stt": "רב נחמן אמר לו: כבר למדתם את זה בברייתא",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "095181defa136c"
+ },
+ "b3_e4": {
+  "model": "scribe_v1",
+  "stt": "מי שמצא חביות של יין, שמן, תבואה, גרוגרות או זיתים הן שלו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "7523434ec5f135"
+ },
+ "b3_e5": {
+  "model": "scribe_v1",
+  "stt": "ואם תחשוב שמקום הוא סימן שיכריז מצאתי חביות במקום הזה והבעלים יגיד את המקום אז משמע שמקום אינו סימן",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "1528b0e91a1c17"
+ },
+ "b3_e6": {
+  "model": "scribe_v1",
+  "stt": "רב זוויד אמר: כאן מדובר בחביות שנמצאו על שפת הנהר. שם מורידים סחורה מהספינות ויש שם חביות של הרבה אנשים. לכן שם המקום לא עוזר",
+  "lax": 0.992,
+  "lax_flag": [
+   "זביד"
+  ],
+  "strict": 0.99,
+  "strict_flag": [
+   "זביד"
+  ],
+  "status": "ok_reviewed",
+  "key": "a859bc4559474e",
+  "note": "זביד – התמלול \"זוויד\" = ההגייה הנכונה zvid"
+ },
+ "b3_e7": {
+  "model": "scribe_v1",
+  "stt": "רב מרי אמר: מה הטעם שחכמים אמרו ששפת הנהר אינה סימן?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "26db78a608762a"
+ },
+ "b3_e8": {
+  "model": "scribe_v1",
+  "stt": "כי אנחנו אומרים לו כמו שקרה לך לאבד שם, יכול להיות שזה קרה גם לחבר שלך",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "d1f80a9b6a15c2"
+ },
+ "b3_e9": {
+  "model": "scribe_v1",
+  "stt": "יש שאומרים גרסה אחרת. רב מרי אמר: מה הטעם שחכמים אמרו שמקום בכלל אינו סימן?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "3b889cbb5b1f13"
+ },
+ "b3_e10": {
+  "model": "scribe_v1",
+  "stt": "כי אומרים לו כמו שקרה לך להניח חפץ במקום הזה, יכול להיות שגם חבר שלך הניח במקום הזה",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "0ba222f70bfa34"
+ },
+ "b3_e11": {
+  "model": "scribe_v1",
+  "stt": "מעשה: אדם אחד מצא זפת ליד הגת, המקום שסוחטים בו ענבים",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "c195e86d588804"
+ },
+ "b3_e12": {
+  "model": "scribe_v1",
+  "stt": "הוא בא לפני רב, והרב אמר לו: \"לך, קח לעצמך\".",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 0.981,
+  "strict_flag": [
+   "ורב"
+  ],
+  "status": "pass",
+  "key": "41a0a30c3cba93"
+ },
+ "b3_e13": {
+  "model": "scribe_v1",
+  "stt": "רב ראה שהאיש מהסס, לא בטוח שמותר לו לקחת",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "116e1b03be14c2"
+ },
+ "b3_e14": {
+  "model": "scribe_v1",
+  "stt": "אמר לו: \"לך, תן חלק ממנה לחיה, הבן שלי\". כך האיש הבין שרב בטוח שמותר",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "8dddf69de2f2bc"
+ },
+ "b3_e15": {
+  "model": "scribe_v1",
+  "stt": "האם נאמר שרב סובר שמקום אינו סימן?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "812169e294d6ad"
+ },
+ "b3_e16": {
+  "model": "scribe_v1",
+  "stt": "רבי אבא אמר לא מזה הטעם. רב התיר בגלל ייאוש הבעלים",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "97c1053a24d2e4"
+ },
+ "b3_e17": {
+  "model": "scribe_v1",
+  "stt": "כי רב ראה שכבר צמחו עשבים על הזפת, סימן שהיא מונחת שם הרבה זמן והבעלים כבר התייאש",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "c0f7dce753d6f7"
+ },
+ "b4_intro": {
+  "model": "scribe_v1",
+  "stt": "רבי שמעון בן אלעזר אומר במשנה על כלי אנפוריה לא צריך להכריז מה זה אנפוריה?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "d2f8fbd973a8bc"
+ },
+ "b4_e1": {
+  "model": "scribe_v1",
+  "stt": "במשנה רבי שמעון בן אלעזר אומר כל כלי אנפוריה אינו חייב להכריז",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "b8303355ee74c6"
+ },
+ "b4_e2": {
+  "model": "scribe_v1",
+  "stt": "מה זה אנפוריה?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "c6555d627a6125"
+ },
+ "b4_e3": {
+  "model": "scribe_v1",
+  "stt": "רב יהודה אמר בשם שמואל: אלה כלים חדשים שהבעלים עוד לא הסתכל עליהם מספיק, עוד לא מכיר אותם טוב",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "234e26d8b27e81"
+ },
+ "b4_e4": {
+  "model": "scribe_v1",
+  "stt": "איך בדיוק זה?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "4ecb9ed56430f9"
+ },
+ "b4_e5": {
+  "model": "scribe_v1",
+  "stt": "אם יש בהם סימן, מה זה משנה שהוא עוד לא הסתכל עליהם מספיק? הסימן מספיק",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "7dd713fd48ff46"
+ },
+ "b4_e6": {
+  "model": "scribe_v1",
+  "stt": "ואם אין בהם סימן, גם אם יסתכל מספיק, מה זה עוזר? אין לו סימן לתת",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 0.977,
+  "strict_flag": [
+   "הסתכל"
+  ],
+  "status": "pass",
+  "key": "bcea912dff3335"
+ },
+ "b4_e7": {
+  "model": "scribe_v1",
+  "stt": "באמת מדובר בכלים שאין בהם סימן",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "a5ffff311ea34e"
+ },
+ "b4_e8": {
+  "model": "scribe_v1",
+  "stt": "וההבדל הוא לעניין להחזיר לתלמיד חכם שאומר אני מכיר את זה בעיניים, תביעות עין, כי לתלמיד חכם מאמינים",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "897cdc2efff865"
+ },
+ "b4_e9": {
+  "model": "scribe_v1",
+  "stt": "אם הוא כבר הסתכל עליהם מספיק, הוא בטוח שהם שלו ומחזירים לו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "7082f344b21f86"
+ },
+ "b4_e10": {
+  "model": "scribe_v1",
+  "stt": "אבל אם עוד לא הסתכל עליהם מספיק, כלים חדשים, הוא לא יכול להיות בטוח ולא מחזירים לו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "276004b2fe838a"
+ },
+ "b5_intro": {
+  "model": "scribe_v1",
+  "stt": "למה מאמינים לתלמיד חכם? כי הוא אומר תמיד אמת. חוץ משלושה דברים שבהם מותר לו לשנות",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "a3c830ef7eea08"
+ },
+ "b5_e1": {
+  "model": "scribe_v1",
+  "stt": "כי רב יהודה אמר בשם שמואל",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "d71177615a98e8"
+ },
+ "b5_e2": {
+  "model": "scribe_v1",
+  "stt": "רק בשלושה דברים חכמים רגילים לשנות בדבריהם. לא לספר בדיוק מה שהיה",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "fb6acd011c743f"
+ },
+ "b5_e3": {
+  "model": "scribe_v1",
+  "stt": "במסכת. אם שואלים אותו: \"אתה יודע את המסכת הזאת?\" הוא יכול לומר \"לא\" מתוך ענווה. ובפוריה, בעניין פרטי של הבית, מתוך צניעות",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "06d69c2983ba5c"
+ },
+ "b5_e4": {
+  "model": "scribe_v1",
+  "stt": "ובאושפיזה, אם שואלים אותו: \"המארח שלך קיבל אותך יפה?\" הוא יכול לומר \"פחות\", כדי שלא יבואו אנשים לא הגונים ויכבידו על המארח",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "a873dc6eb844a4"
+ },
+ "b5_e5": {
+  "model": "scribe_v1",
+  "stt": "מה יוצא מזה למעשה?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "d31612ed450d20"
+ },
+ "b5_e6": {
+  "model": "scribe_v2",
+  "stt": "מר זוטרה אמר: \"לעניין להחזיר לו אבידה כשהוא אומר אני מכיר אותה בעין\".",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "a2b1f0a9df8de9"
+ },
+ "b5_e7": {
+  "model": "scribe_v1",
+  "stt": "אם אנחנו יודעים עליו שהוא משנה רק בשלושת הדברים האלה מחזירים לו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "4f6cf25bafdc4b"
+ },
+ "b5_e8": {
+  "model": "scribe_v1",
+  "stt": "ואם הוא משנה גם בדברים אחרים לא מחזירים לו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "a758eeee83900e"
+ },
+ "b5_e9": {
+  "model": "scribe_v1",
+  "stt": "מעשה: אצל המארח של מר זוטרא החסיד נגנב כוס של כסף",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "18ac3001ea8748"
+ },
+ "b5_e10": {
+  "model": "scribe_v1",
+  "stt": "מר זוטרה ראה תלמיד אחד שרחץ ידיים וניגב אותן בבגד, גלימה, של החבר שלו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "145e1b1f9391a3"
+ },
+ "b5_e11": {
+  "model": "scribe_v1",
+  "stt": "אמר זה הוא מי שלא אכפת לו מהרכוש של חברו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "a391f32e07217a"
+ },
+ "b5_e12": {
+  "model": "scribe_v1",
+  "stt": "קשרו אותו והוא הודה שהוא לקח את הכוס",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "dc8b10cccc8f15"
+ },
+ "b6_intro": {
+  "model": "scribe_v1",
+  "stt": "ברייתא מסבירה עוד על כלים חדשים. אילו כלים הם ומתי בכל זאת צריך להכריז?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "dbddc9df4ce7dc"
+ },
+ "b6_e1": {
+  "model": "scribe_v1",
+  "stt": "שנינו בברייתא. רבי שמעון בן אלעזר מסכים שעל כלים חדשים שהבעלים כבר הסתכל עליהם מספיק חייב להכריז",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "8af292460bbfa2"
+ },
+ "b6_e2": {
+  "model": "scribe_v1",
+  "stt": "ואלה הם כלים חדשים שהבעלים עוד לא הסתכל עליהם מספיק ולא צריך להכריז עליהם",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "b463c1136e5a94"
+ },
+ "b6_e3": {
+  "model": "scribe_v1",
+  "stt": "למשל, ענפים שתולים עליהם מחטים, צינוריות, מזלגות קטנים לטוויית חוטי זהב ומחרוזות של קרדומות, גרזנים",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "4c79ee03cd7942"
+ },
+ "b6_e4": {
+  "model": "scribe_v1",
+  "stt": "כל אלה, מתי מותר לקחת אותם?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "c825029e4709c8"
+ },
+ "b6_e5": {
+  "model": "scribe_v1",
+  "stt": "כשמצא אותם אחד אחד, בד אחד, מחרוזת אחת",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "a606e7a4dd51b1"
+ },
+ "b6_e6": {
+  "model": "scribe_v1",
+  "stt": "אבל אם מצא שניים יחד חייב להכריז כי המספר מניין הוא סימן כמו שלמדנו מרב ששת",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "c194f006ec7181"
+ },
+ "b6_e7": {
+  "model": "scribe_v1",
+  "stt": "מה זה בדי? ענפים",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "a88f2805b33cb2"
+ },
+ "b6_e8": {
+  "model": "scribe_v1",
+  "stt": "ולמה קוראים לזה בדי?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "92b322a1296e4e"
+ },
+ "b6_e9": {
+  "model": "scribe_v1",
+  "stt": "דבר שתולים עליו משהו קוראים לו בד",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "cb0404f2382274"
+ },
+ "b6_e10": {
+  "model": "scribe_v1",
+  "stt": "כמו ששנינו שם בהלכות לולב, עלה אחד בווד אחד, כלומר בענף אחד",
+  "lax": 0.984,
+  "lax_flag": [
+   "בבד"
+  ],
+  "strict": 0.989,
+  "strict_flag": [
+   "בבד"
+  ],
+  "status": "ok_reviewed",
+  "key": "5c13cb1f896853",
+  "note": "בבד – התמלול \"בווד\" = ההגייה הנכונה bevad"
+ },
+ "b7_intro": {
+  "model": "scribe_v1",
+  "stt": "עוד דין של רבי שמעון בן אלעזר: חפצים שהבעלים כבר התייאש מהם",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "d340dd8da7537c"
+ },
+ "b7_e1": {
+  "model": "scribe_v1",
+  "stt": "וכך היה אומר רבי שמעון בן אלעזר",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "fc8c28b5774a3e"
+ },
+ "b7_e2": {
+  "model": "scribe_v1",
+  "stt": "מי שמציל חפץ מאריה, מדוב, מנמר או מברדלס, חיה טורפת לפי רש\"י, צבוע",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "88c3d927e78aaa"
+ },
+ "b7_e3": {
+  "model": "scribe_v1",
+  "stt": "או מהגלים של הים כשהים עולה או משטפון של נהר",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "7a464c4d97598a"
+ },
+ "b7_e4": {
+  "model": "scribe_v1",
+  "stt": "או מי שמוצא ברחוב ראשי, דרך המלך או בכיכר גדולה",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "de137375d95d19"
+ },
+ "b7_e5": {
+  "model": "scribe_v1",
+  "stt": "או בכל מקום שהרבה אנשים נמצאים בו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "ed01c33bbfa7ab"
+ },
+ "b7_e6": {
+  "model": "scribe_v1",
+  "stt": "הם של המוצא, כי הבעלים מתייאשים מהם, אפילו אם יש בהם סימן",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "96303ad1667365"
+ },
+ "b8_intro": {
+  "model": "scribe_v1",
+  "stt": "הגמרא שואלת שאלה אחרי שאלה כמו סולם על דברי רבי שמעון בן אלעזר במקום שהרבים מצויים",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "261bbd60f9690e"
+ },
+ "b8_e1": {
+  "model": "scribe_v1",
+  "stt": "החכמים שאלו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "ae0bab326a9a14"
+ },
+ "b8_e2": {
+  "model": "scribe_v1",
+  "stt": "כשרבי שמעון בן אלעזר אמר שבמקום של רבים העבודה של המוצא, האם הוא התכוון רק למקום שרוב האנשים בו גויים?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 0.987,
+  "strict_flag": [
+   "האבידה"
+  ],
+  "status": "pass",
+  "key": "8d996ac4554b28"
+ },
+ "b8_e3": {
+  "model": "scribe_v1",
+  "stt": "אבל במקום שרובו יהודים? לא, כי הבעלים סומך שיהודים יחזירו לו?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "4ca2a530698d84"
+ },
+ "b8_e4": {
+  "model": "scribe_v1",
+  "stt": "או שמא גם במקום שרובו יהודים הוא אמר כך?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "ff3c50bd4d10fc"
+ },
+ "b8_e5": {
+  "model": "scribe_v1",
+  "stt": "ואם תחליט שגם ברוב יהודים הוא אמר כך",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "38714d2bcf73c5"
+ },
+ "b8_e6": {
+  "model": "scribe_v1",
+  "stt": "האם החכמים חולקים עליו או לא חולקים?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "e645c6eeef954c"
+ },
+ "b8_e7": {
+  "model": "scribe_v1",
+  "stt": "ואם תחליט שהם חולקים, ברוב יהודים ודאי חולקים, אבל ברוב גויים חולקים או לא?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "ed69011739bcd0"
+ },
+ "b8_e8": {
+  "model": "scribe_v1",
+  "stt": "ואם תחליט שהם חולקים גם ברוב גויים, האם ההלכה כמו רבי שמעון בן אלעזר או לא?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "be9d82784dc771"
+ },
+ "b8_e9": {
+  "model": "scribe_v1",
+  "stt": "ואם ההלכה כמותו, האם רק ברוב גויים או אפילו ברוב יהודים?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "f616f7f6ba1e25"
+ },
+ "b9_intro": {
+  "model": "scribe_v1",
+  "stt": "הגמרא מנסה לפתור את השאלה מברייתא על מי שמוצא מעות בבית הכנסת",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "ee68cb13e05660"
+ },
+ "b9_e1": {
+  "model": "scribe_v1",
+  "stt": "בוא ושמע ראיה",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "070c3f66459505"
+ },
+ "b9_e2": {
+  "model": "scribe_v1",
+  "stt": "ברייתא: מי שמוצא מטבעות בבתי כנסת ובבתי מדרש ובכל מקום שהרבה אנשים נמצאים בו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "ab7ce54c44ecdc"
+ },
+ "b9_e3": {
+  "model": "scribe_v1",
+  "stt": "הם של המוצא, כי הבעלים מתייאשים מהם",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "6542f486fb0b0f"
+ },
+ "b9_e4": {
+  "model": "scribe_v1",
+  "stt": "מי שמענו שהולך אחרי הרבים, שאומר שבמקום שיש בו הרבה אנשים מתייאשים? רבי שמעון בן אלעזר",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "27552aa6e7d65e"
+ },
+ "b9_e5": {
+  "model": "scribe_v1",
+  "stt": "למד מזה. גם במקום שרובו יהודים, בית כנסת, הוא אומר כך",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "b3163bfab8f16e"
+ },
+ "b9_e6": {
+  "model": "scribe_v1",
+  "stt": "דוחים. כאן מדובר במטבעות מפוזרים שאין בהם סימן ועל זה גם החכמים מודים שהם של המוצא",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "55205460166c19"
+ },
+ "b9_e7": {
+  "model": "scribe_v1",
+  "stt": "אם הם מפוזרים, למה דווקא מקום שהרבים מצויים שם?",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "ce3450e86acc05"
+ },
+ "b9_e8": {
+  "model": "scribe_v1",
+  "stt": "גם במקום שאין בו הרבה אנשים. מעות מפוזרות שייכות למוצא",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "22f804a3ee70f6"
+ },
+ "b9_e9": {
+  "model": "scribe_v1",
+  "stt": "אלא באמת מדובר במטבעות צרורים קשורים יחד בצרור שיש בהם סימן",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "61297fb2c25e8e"
+ },
+ "b9_e10": {
+  "model": "scribe_v1",
+  "stt": "וכאן מדובר בבתי כנסיות של גויים, מקום שגויים מתאספים בו",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 0.988,
+  "strict_flag": [
+   "ב"
+  ],
+  "status": "pass",
+  "key": "4269b3e4abf57e"
+ },
+ "b9_e11": {
+  "model": "scribe_v1",
+  "stt": "ובתי מדרש. מה אפשר לומר? אלה מקומות של יהודים",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "6cadb60bc10c99"
+ },
+ "b9_e12": {
+  "model": "scribe_v1",
+  "stt": "בתי מדרש שלנו שיושבים בהם גויים, למשל שומרים",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "7d5d60ea575685"
+ },
+ "b9_e13": {
+  "model": "scribe_v1",
+  "stt": "עכשיו שהגעת לזה גם בתי הכנסת הם שלנו ויושבים בהם נכרים, אז אין מכאן ראיה",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "6569f1e1d681db"
+ },
+ "b10_intro": {
+  "model": "scribe_v1",
+  "stt": "עוד ניסיון לפתור את השאלה ממשנה על עיר שגרים בה יהודים וגויים. הסוגיה ממשיכה בעמוד הבא דף כ\"ד עמוד ב'.",
+  "lax": 0.956,
+  "lax_flag": [
+   "כף",
+   "דלת",
+   "בית"
+  ],
+  "strict": 0.967,
+  "strict_flag": [
+   "כף",
+   "דלת",
+   "בית"
+  ],
+  "status": "ok_reviewed",
+  "key": "dec738f2ed9620",
+  "note": "נרמול של התמלול: \"כף דלת עמוד בית\" נכתב כ־כ\"ד עמוד ב'"
+ },
+ "b10_e1": {
+  "model": "scribe_v2",
+  "stt": "בואו נשמע משנה במסכת מכשירין על עיר שגרים בה יהודים וגויים. מצא בה אבדה",
+  "lax": 0.985,
+  "lax_flag": [
+   "ושמע"
+  ],
+  "strict": 0.982,
+  "strict_flag": [
+   "ושמע",
+   "אבידה"
+  ],
+  "status": "ok_reviewed",
+  "key": "123e85ef63a326",
+  "note": "בדיקה ידנית: \"בוא ושמע\" נשמע \"בואו נשמע\" – הבדל קל בתמלול"
+ },
+ "b10_e2": {
+  "model": "scribe_v2",
+  "stt": "אם רוב האנשים בעיר יהודים חייב להכריז",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "075d6a45f6b424"
+ },
+ "b10_e3": {
+  "model": "scribe_v1",
+  "stt": "אם רובם גויים לא חייב להכריז",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "33c5a16fc06a5b"
+ },
+ "b10_e4": {
+  "model": "scribe_v1",
+  "stt": "מי אומר שהולכים אחרי הרבים? רבי שמעון בן אלעזר",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "d43334c921d259"
+ },
+ "b10_e5": {
+  "model": "scribe_v1",
+  "stt": "למד מזה. רבי שמעון בן אלעזר אמר את דינו רק ברוב גויים, אבל ברוב יהודים לא",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "c2bf71264788cc"
+ },
+ "b10_e6": {
+  "model": "scribe_v1",
+  "stt": "דוחים. של מי המשנה הזאת? של החכמים שחולקים על רבי שמעון",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "a7dbd20c1e7d08"
+ },
+ "b10_e7": {
+  "model": "scribe_v1",
+  "stt": "אם כך, נפתור מזה לפחות שאלה אחרת, שהחכמים מסכימים לרבי שמעון בן אלעזר ברוב גויים",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "986c4bf25e406f"
+ },
+ "b10_e8": {
+  "model": "scribe_v1",
+  "stt": "אלא באמת זו דעת רבי שמעון בן אלעזר, והוא אומר של המוצא גם ברוב יהודים",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "b08fc75d0103f9"
+ },
+ "b10_e9": {
+  "model": "scribe_v1",
+  "stt": "וכאן מדובר בחפץ טמון מוסתר. הוא לא אבד ולכן ברוב יהודים מכריזים",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "c5cb750abf611c"
+ },
+ "b10_e10": {
+  "model": "scribe_v1",
+  "stt": "אם הוא טמון מה הוא עושה אצלו? למה לקח אותו? הבעלים הסתיר אותו ויחזור לקחת",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "871f60784497a4"
+ },
+ "b10_e11": {
+  "model": "scribe_v1",
+  "stt": "והרי שנינו במשנה. מי שמצא כלי באשפה, ערימת זבל, אם הוא מכוסה לא יגע בו. אם הוא גלוי לוקח ומכריז",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 0.993,
+  "strict_flag": [
+   "ערמת"
+  ],
+  "status": "pass",
+  "key": "4c70b795d7ee2c"
+ },
+ "b10_e12": {
+  "model": "scribe_v1",
+  "stt": "כמו שאמר רב פפא, מדובר באשפה שבדרך כלל לא מפנים אותה, ובעל המקום החליט פתאום לפנות אותה. אם לא ייקחו את הכלי, הוא ייזרק",
+  "lax": 1.0,
+  "lax_flag": [],
+  "strict": 1.0,
+  "strict_flag": [],
+  "status": "pass",
+  "key": "7a6a556226104c"
+ },
+ "b10_e13": {
+  "model": "scribe_v1",
+  "stt": "גם כאן מדובר באשפה כזאת. לכן לוקחים את החפץ ואם רוב העיר יהודים מכריזים. כך שגם מכאן אין ראיה. הגמרא ממשיכה בדף כ\"ד עמוד ב'.",
+  "lax": 0.968,
+  "lax_flag": [
+   "כף",
+   "דלת",
+   "בית"
+  ],
+  "strict": 0.972,
+  "strict_flag": [
+   "כף",
+   "דלת",
+   "בית"
+  ],
+  "status": "ok_reviewed",
+  "key": "98bd6fa2e9df6f",
+  "note": "נרמול של התמלול: \"כף דלת עמוד בית\" נכתב כ־כ\"ד עמוד ב'"
+ }
+}

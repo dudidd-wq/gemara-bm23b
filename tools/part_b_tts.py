@@ -30,7 +30,7 @@ def vocal_map(unit):
             m.setdefault(plain(w), set()).add(w)
     return {k: next(iter(v)) for k, v in m.items() if len(v) == 1}
 # ניקוד עזר להקראה בלבד (לא מוצג באתר) למילים דו-משמעיות
-FIX = {'מברדלס': 'מִבַּרְדְּלָס', 'צבוע': 'צָבוֹעַ', 'בד': 'בַּד', 'בבד': 'בְּבַד', 'מנין': 'מִנְיָן', 'מעות': 'מָעוֹת'}
+FIX = {'בבגד': 'בַּבֶּגֶד', 'ששת': 'שֵׁשֶׁת', 'מברדלס': 'מִבַּרְדְּלָס', 'צבוע': 'צָבוֹעַ', 'בד': 'בַּד', 'בבד': 'בְּבַד', 'מנין': 'מִנְיָן', 'מעות': 'מָעוֹת'}
 DAF = {'כ"ג ע"ב': 'דַּף כָּף גִּימֶל, עַמּוּד בֵּית', 'כ"ד ע"א': 'דַּף כָּף דָּלֶת, עַמּוּד אָלֶף', 'כ"ד ע"ב': 'דַּף כָּף דָּלֶת, עַמּוּד בֵּית'}
 def tts_expl(t, vm):
     t = t.replace('▽', '')
@@ -123,7 +123,9 @@ def encode():
     for cid, kind, text in plan():
         if kind == 'gemara' and gate.get(cid, {}).get('status') not in ('pass', 'approved'):
             continue  # שורות גמרא: רק קטעים שעברו את בדיקת התמלול (או אושרו ע"י דודי)
-        k = key(text); src = f'{D}/{k}.mp3'
+        if kind == 'gemara': k, text = gate[cid]['key'], gate[cid]['phon']  # הקלטה בכתיב פונטי
+        else: k = key(text)
+        src = f'{D}/{k}.mp3'
         if not os.path.exists(src): missing.append(cid); continue
         dst = os.path.join(ROOT, 'audio/b', k + '.mp3')
         if not os.path.exists(dst):
