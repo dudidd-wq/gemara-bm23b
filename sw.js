@@ -1,6 +1,6 @@
 /* Service worker: עבודה בלי אינטרנט. כשמשנים קבצים – להעלות את VERSION. */
 'use strict';
-var VERSION = 'bm23b-v2';
+var VERSION = 'bm23b-v3';
 var FILES = [
  "./",
  "index.html",
@@ -9,8 +9,10 @@ var FILES = [
  "js/util.js",
  "js/pages.js",
  "js/games.js",
+ "js/partb.js",
  "js/app.js",
  "data/site_data.json",
+ "data/part_b.json",
  "fonts/Rubik-Hebrew.woff2",
  "fonts/FrankRuhlLibre-Hebrew.woff2",
  "icons/icon.svg",
@@ -70,7 +72,7 @@ self.addEventListener('fetch', function (e) {
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
   // הסרטון (40MB) לא נשמר במטמון – תמיד מהרשת, כולל בקשות Range
   if (/\/video\//.test(new URL(req.url).pathname)) return;
-  var isData = /\/data\/site_data\.json$/.test(new URL(req.url).pathname);
+  var isData = /\/data\/(site_data|part_b)\.json$/.test(new URL(req.url).pathname);
   if (isData) { // רשת קודם (תוכן מעודכן), ואם אין – מהמטמון
     e.respondWith(fetch(req).then(function (r) { var cp = r.clone(); caches.open(VERSION).then(function (c) { c.put(req, cp); }); return r; })
       .catch(function () { return caches.match(req, { ignoreSearch: true }); }));

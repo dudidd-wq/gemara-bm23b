@@ -20,7 +20,7 @@ var APP = {
   pages: PAGES,
   activities: function () { return APP.data.progress.activities; },
   route: function () {
-    var r = (location.hash || '#/').replace(/^#\/?/, '').split('?')[0];
+    var r = (location.hash || '#/').replace(/^#\/?/, '').split('?')[0].split('/')[0];
     return r || 'home';
   },
   go: function (id) { location.hash = id === 'home' ? '#/' : '#/' + id; },

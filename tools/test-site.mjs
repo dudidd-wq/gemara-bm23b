@@ -14,6 +14,10 @@ let BASE = '';
 const results = []; let failed = 0;
 const ok = (name, cond, info = '') => { results.push({ name, pass: !!cond, info }); if (!cond) failed++; console.log((cond ? '✔' : '✖') + ' ' + name + (info ? '  — ' + info : '')); };
 const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/site_data.json'), 'utf8'));
+const partB = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/part_b.json'), 'utf8'));
+const sefaria = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/sefaria/bm_23b_24a.json'), 'utf8'));
+const B_TABS = ['learn', 'quiz', 'match', 'order', 'self'];
+const strip = (x) => String(x || '').replace(/[\u0591-\u05C7]/g, '').replace(/\s+/g, ' ').trim();
 const ROUTES = ['', 'learn', 'text', 'flashcards', 'fill_in', 'multiple_choice', 'matching', 'true_false', 'order', 'self_check', 'video', 'answers', 'progress'];
 
 // 1) בדיקת תוכן (שם ה', אמוג'י של אנשים)
@@ -265,6 +269,90 @@ await page.locator('button', { hasText: 'צָפִיתִי' }).click();
 await page.evaluate(() => window.scrollTo(0, 0));
 await shot('12-video.png');
 
+
+// 14b) חלק ב: המשך הגמרא
+const goB = async (r) => { await page.goto(BASE + '#/' + r); await page.waitForFunction(() => document.getElementById('app').children.length && !/טוֹעֵן…/.test(document.getElementById('app').innerText)); await page.evaluate(() => document.fonts.ready); };
+{
+  const bRoutes = ['b', 'b-words'].concat(...partB.units.map(u => B_TABS.map(t => `b/${u.id}/${t}`)));
+  const fails = [];
+  for (const r of bRoutes) {
+    const before = errors.length; await goB(r);
+    const info = await page.evaluate(() => ({ dir: document.documentElement.dir, len: document.getElementById('app').innerText.length, overflow: document.documentElement.scrollWidth > window.innerWidth + 1, title: document.getElementById('pageTitle').textContent }));
+    if (!(info.dir === 'rtl' && info.len > 40 && errors.length === before && !info.overflow)) fails.push(r + ' ' + JSON.stringify(info) + ' ' + errors.slice(before).join(' | '));
+  }
+  ok(`part B: all ${bRoutes.length} routes load (rtl, no JS errors, no horizontal overflow)`, fails.length === 0, fails.join(' ; '));
+  await goB('');
+  const home = await page.evaluate(() => ({ a: (document.getElementById('partA') || {}).textContent, b: (document.getElementById('partBh') || {}).textContent, tiles: document.querySelectorAll('.grid .tile').length, link: !!document.querySelector('#partB a[href="#/b"]') }));
+  ok('home: "חלק א: מחרוזות של דגים (למבחן)" + "חלק ב: המשך הגמרא (דף כד ע"א)"; part A tiles unchanged', /חלק א: מחרוזות של דגים \(למבחן\)/.test(strip(home.a)) && /חלק ב: המשך הגמרא \(דף כ"ד ע"א\)/.test(strip(home.b)) && home.tiles === data.progress.activities.length + 2 && home.link, JSON.stringify(home));
+  await page.locator('#partB').scrollIntoViewIfNeeded(); await shot('15-home-part-b.png');
+  await goB('b'); await shot('16-part-b-units.png');
+  ok('part B unit list shows all units', (await page.locator('a.prow[id^="unit-"]').count()) === partB.units.length);
+  // הטקסט זהה לספריא, מילה במילה
+  const shown = []; for (const u of partB.units) { await goB(`b/${u.id}/learn`); shown.push(...await page.$$eval('#bLines .gline .words', ws => ws.map(w => [...w.children].map(c => c.firstChild.textContent).join(' ')))); }
+  const norm = x => x.normalize('NFC').replace(/\s+/g, ' ').trim();
+  const src = norm([...sefaria.gemara['23b'].slice(2), ...sefaria.gemara['24a']].join(' '));
+  ok('part B: Gemara text shown = Sefaria vocalized text verbatim (23b:3 – 24a:17)', norm(shown.join(' ')) === src, `chars=${norm(shown.join(' ')).length}/${src.length}`);
+  // גופן ניקוד
+  await goB('b/b1/learn');
+  const cdp2 = await ctx.newCDPSession(page); await cdp2.send('DOM.enable'); await cdp2.send('CSS.enable');
+  const d2 = await cdp2.send('DOM.getDocument');
+  const { nodeId } = await cdp2.send('DOM.querySelector', { nodeId: d2.root.nodeId, selector: '#bLines .w' });
+  const ff = (await cdp2.send('CSS.getPlatformFontsForNode', { nodeId })).fonts;
+  ok('part B: Gemara lines render with Frank Ruhl Libre (niqqud font)', ff.some(f => /Frank Ruhl/.test(f.familyName)), JSON.stringify(ff));
+  // לימוד: הקשה על מילים ופשט
+  const wb = page.locator('#bLines button.w');
+  const nW = await wb.count();
+  for (let k = 0; k < nW; k++) await wb.nth(k).evaluate(e => e.click());
+  const pbs = page.locator('#bLines .pb'); const nP = await pbs.count();
+  for (let k = 0; k < nP; k++) await pbs.nth(k).evaluate(e => e.click());
+  const say = await page.locator('#bLines .hint:not([hidden])').first().innerText();
+  await page.locator('#bTr').check();
+  await page.evaluate(() => window.scrollTo(0, 0)); await shot('17-part-b-learn.png');
+  await page.click('#learnDone');
+  let pb = await page.evaluate(() => JSON.parse(localStorage.getItem('bm23b_progress_v1')).activities);
+  ok('part B learn: word tap shows translation, pshat opens, learn recorded 3★', /=/.test(say) && pb['b:b1:learn'] && pb['b:b1:learn'].stars === 3, `words=${nW} pshat=${nP} say=${say}`);
+  // כל היחידות: שאלות, התאמה, סדר, הסבר – דרך הממשק
+  const unitFails = [];
+  for (const u of partB.units) {
+    if (u.id !== 'b1') { await goB(`b/${u.id}/learn`); await page.click('#learnDone'); }
+    await goB(`b/${u.id}/quiz`);
+    const nq = u.quiz.multiple_choice.length + u.quiz.true_false.length;
+    for (let k = 0; k < nq; k++) {
+      if (u.id === 'b1' && k === 0) { await shot('18-part-b-quiz.png'); await page.locator('.opt[data-correct="0"]').first().click(); }
+      await page.locator('.opt[data-correct="1"]').click(); await page.click('#bqNext');
+    }
+    await goB(`b/${u.id}/match`);
+    const n = u.quiz.matching.pairs.length;
+    for (let k = 0; k < n; k++) { await page.locator(`.mi[data-side="r"][data-i="${k}"]`).click(); await page.locator(`.mi[data-side="l"][data-i="${k}"]`).click(); }
+    if (u.id === 'b1') await shot('19-part-b-match.png');
+    await goB(`b/${u.id}/order`);
+    // מסדרים בעזרת החצים ▲
+    for (let pos = 0; pos < u.flow.length; pos++) {
+      for (;;) { const cur = await page.$$eval('.order li', ls => ls.map(l => +l.dataset.k)); const at = cur.indexOf(pos); if (at <= pos) break; await page.locator('.order li').nth(at).locator('.mv button').first().click(); }
+    }
+    await page.click('#bOrderCheck');
+    if (u.id === 'b1') await shot('20-part-b-order.png');
+    await goB(`b/${u.id}/self`);
+    await page.fill('textarea', 'הסבר שלי'); await page.click('#bSelfGo');
+    const cbs = page.locator('.kp input'); for (let k = 0; k < await cbs.count(); k++) await cbs.nth(k).check();
+    await page.click('#bSelfModel');
+    pb = await page.evaluate(() => JSON.parse(localStorage.getItem('bm23b_progress_v1')).activities);
+    const miss = B_TABS.filter(t => !(pb[`b:${u.id}:${t}`] && pb[`b:${u.id}:${t}`].done));
+    if (miss.length) unitFails.push(u.id + ':' + miss.join(','));
+  }
+  ok(`part B: all ${partB.units.length} units completed through the UI (learn, MCQ+TF, matching, ordering, self-check)`, unitFails.length === 0, unitFails.join(' '));
+  ok('part B: stars — b1 quiz 2★ after a first wrong answer, others 3★', pb['b:b1:quiz'].stars === 2 && pb['b:b2:quiz'].stars === 3 && pb['b:b10:order'].stars === 3 && pb['b:b5:self'].stars === 3, JSON.stringify(pb['b:b1:quiz']));
+  await goB('b-words');
+  for (let k = 0; k < partB.glossary.length; k++) { await page.click('#bwFlip'); if (k === 0) await shot('21-part-b-words.png'); await page.click('#bwKnew'); }
+  pb = await page.evaluate(() => JSON.parse(localStorage.getItem('bm23b_progress_v1')).activities);
+  ok('part B word cards (flip / knew) recorded', pb['b:words'] && pb['b:words'].stars === 3);
+  await goB('progress');
+  await page.waitForFunction(() => document.querySelectorAll('#progB a.prow').length > 0);
+  const prog = await page.evaluate(() => ({ rows: document.querySelectorAll('#progB a.prow').length, txt: document.getElementById('progB').innerText }));
+  ok('progress page has a part B section with all units', prog.rows === partB.units.length + 1 && /סימת 10 מתוך 10 יחידות/.test(strip(prog.txt)), prog.txt.slice(0, 120));
+  await page.locator('#progB').scrollIntoViewIfNeeded(); await shot('22-progress-part-b.png');
+}
+
 // 15) התקדמות נשמרת אחרי טעינה מחדש, מסך סיום, איפוס
 await page.reload(); await go('progress');
 const st = await page.evaluate(() => JSON.parse(localStorage.getItem('bm23b_progress_v1')));
@@ -294,9 +382,11 @@ await ctx.setOffline(true);
 await page.reload(); await page.waitForSelector('#app > :not(.loading)', { timeout: 8000 }).catch(() => {});
 const offline = await page.evaluate(() => document.querySelectorAll('.tile').length);
 await go('flashcards').catch(() => {});
+await goB('b/b3/learn').catch(() => {});
+const offB = await page.evaluate(() => document.querySelectorAll('#bLines .gline').length);
 const offAudio = await page.evaluate(async (f) => new Promise(r => { const a = new Audio(); a.onloadedmetadata = () => r(a.duration); a.onerror = () => r(-1); a.src = f; }), [...files][0]);
 await ctx.setOffline(false);
-ok('PWA: service worker active, site + audio work offline', swOk && offline >= 10 && offAudio > 0, `tiles=${offline} audio=${offAudio}`);
+ok('PWA: service worker active, site + audio + part B work offline', swOk && offline >= 10 && offAudio > 0 && offB > 0, `tiles=${offline} audio=${offAudio} partB-lines=${offB}`);
 
 ok('no JS errors during the whole run', errors.length === 0, errors.join(' | '));
 ok('no 4xx/5xx for local files', bad.length === 0, bad.join(' | '));
