@@ -21,8 +21,8 @@
   "b3_g15 לֵימָא": {
    "original_word": 0.84,
    "original_line": 8.77,
-   "best_word": 0.84,
-   "best_line": 8.77
+   "best_word": 1.0,
+   "best_line": 10.0
   },
   "b4_g4 דָמֵי": {
    "original_word": 0.72,
@@ -33,8 +33,8 @@
   "b8_g1 אִיבַּעְיָא": {
    "original_word": 0.75,
    "original_line": 8.12,
-   "best_word": 0.9,
-   "best_line": 8.25
+   "best_word": 1.0,
+   "best_line": 10.0
   },
   "b5_g1 דְּאָמַר": {
    "original_word": 0.9,
@@ -78,7 +78,7 @@
  },
  "mismatched_text (should be ~0)": {
   "n": 234,
-  "mean": 1.2,
+  "mean": 1.21,
   "median": 1.23,
   "ge9": 0,
   "lt5": 233

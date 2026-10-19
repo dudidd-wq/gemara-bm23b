@@ -1,8 +1,8 @@
 /* Service worker: עבודה בלי אינטרנט. כשמשנים קבצים – להעלות את VERSION. */
 'use strict';
-var VERSION = 'bm23b-v6';
+var VERSION = 'bm23b-v7';
 // קריינות חלק ב (7MB) – לא בהתקנה, נשמרת במטמון נפרד בפעם הראשונה שמשמיעים קטע
-var AUDIO_B = 'bm23b-audio-b-v3';
+var AUDIO_B = 'bm23b-audio-b-v4';
 var FILES = [
  "./",
  "index.html",
