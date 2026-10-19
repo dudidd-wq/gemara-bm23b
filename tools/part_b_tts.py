@@ -16,7 +16,7 @@ MODEL = 'eleven_v4'
 VS = {'stability': 0.4, 'similarity_boost': 0.8, 'style': 0.35, 'speed': 0.9, 'use_speaker_boost': True}
 NQ = re.compile(r'[\u0591-\u05C7]')
 def plain(s): return NQ.sub('', s)
-def key(text): return hashlib.sha1(json.dumps([text, VOICE, MODEL, VS], ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:14]
+def key(text, vs=None): return hashlib.sha1(json.dumps([text, VOICE, MODEL, vs or VS], ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:14]
 
 # ---------- הכנת הטקסט להקראה ----------
 NAMES = set('ביבי נחמן זביד מרי זירא הושעיא אביי יעקב הונא רבה חייא זוטרא שמואל יהודה פפא שמעון אלעזר אבא'.split())
@@ -76,16 +76,16 @@ def ledstate():
         for l in open(LED): d = json.loads(l); st.setdefault(d['key'], []).append(d['status'])
     return st
 class Quota(Exception): pass
-def tts(text, tag=''):
-    k = key(text); mp3 = f'{D}/{k}.mp3'; js = f'{D}/{k}.json'
+def tts(text, tag='', vs=None):
+    vs = vs or VS; k = key(text, vs); mp3 = f'{D}/{k}.mp3'; js = f'{D}/{k}.json'
     if os.path.exists(mp3) and os.path.exists(js): return k, False
     st = ledstate().get(k, [])
     if st.count('sent') > st.count('ok') + st.count('ok_err'): raise RuntimeError(f'{k} {tag}: prior call may have succeeded; refusing to repeat (check history)')
-    body = {'text': text, 'model_id': MODEL, 'language_code': 'he', 'voice_settings': VS}
+    body = {'text': text, 'model_id': MODEL, 'language_code': 'he', 'voice_settings': vs}
     req = urllib.request.Request(f'https://api.elevenlabs.io/v1/text-to-speech/{VOICE}/with-timestamps?output_format=mp3_44100_128', method='POST',
                                  headers={'xi-api-key': K, 'Content-Type': 'application/json'}, data=json.dumps(body).encode())
     for att in range(3):
-        led({'key': k, 'tag': tag, 'status': 'sent', 'text': text, 'chars': len(text), 't': time.time()})
+        led({'key': k, 'tag': tag, 'status': 'sent', 'text': text, 'chars': len(text), 't': time.time(), **({'vs': vs} if vs != VS else {})})
         try:
             with urllib.request.urlopen(req, timeout=240) as f: r = json.loads(f.read())
             open(mp3, 'wb').write(base64.b64decode(r['audio_base64']))
@@ -117,26 +117,30 @@ def gen(only):
 GATE = os.path.join(ROOT, 'tools/part_b_audio_gate.json')
 def load_gate(): return json.load(open(GATE, encoding='utf-8')) if os.path.exists(GATE) else {}
 def dur_of(p): return float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', p]).decode().strip())
+EXAM = os.path.join(ROOT, 'tools/part_b_exam.json')
+PASS = 9.0
+def best_take(e): return max([t for t in e['takes'].values() if not t.get('excluded')] or [{'score': 0, 'key': None}], key=lambda t: (t['score'], -len(t.get('text') or '')))
 def encode():
-    out, missing, tot = {}, [], 0.0
-    gate = load_gate()
+    """מפרסם רק קטעים שהבוחן החיצוני נתן להם 9 ומעלה (tools/part_b_exam.json)."""
+    out, missing, hidden, tot = {}, [], [], 0.0
+    exam = json.load(open(EXAM, encoding='utf-8'))
     for cid, kind, text in plan():
-        if kind == 'gemara' and gate.get(cid, {}).get('status') not in ('pass', 'approved'):
-            continue  # שורות גמרא: רק קטעים שעברו את בדיקת התמלול (או אושרו ע"י דודי)
-        if kind == 'gemara': k, text = gate[cid]['key'], gate[cid]['phon']  # הקלטה בכתיב פונטי
-        else: k = key(text)
-        src = f'{D}/{k}.mp3'
+        e = exam.get(cid)
+        if not e: missing.append(cid); continue
+        b = best_take(e)
+        if b['score'] < PASS: hidden.append(cid); continue
+        k = b['key']; src = f'{D}/{k}.mp3'
         if not os.path.exists(src): missing.append(cid); continue
         dst = os.path.join(ROOT, 'audio/b', k + '.mp3')
         if not os.path.exists(dst):
             subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', src, '-ac', '1', '-ar', '44100', '-c:a', 'libmp3lame', '-b:a', '48k', dst], check=True)
         d = round(dur_of(dst), 2); tot += d
-        out[cid] = {'file': 'audio/b/' + k + '.mp3', 'start': 0, 'end': d, 'kind': kind, 'tts_text': text}
+        out[cid] = {'file': 'audio/b/' + k + '.mp3', 'start': 0, 'end': d, 'kind': kind, 'tts_text': b.get('text') or text, 'score': b['score']}
     used = {os.path.basename(c['file']) for c in out.values()}
     for f in os.listdir(os.path.join(ROOT, 'audio/b')):
         if f not in used: os.remove(os.path.join(ROOT, 'audio/b', f))
     json.dump({'voice': VOICE, 'model': MODEL, 'clips': out}, open(os.path.join(ROOT, 'data/part_b_audio.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
-    print('encoded', len(out), 'missing', len(missing), 'total sec', round(tot, 1), missing[:10])
+    print('encoded', len(out), 'hidden', len(hidden), 'missing', len(missing), 'total sec', round(tot, 1), hidden, missing[:10])
 
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else 'plan'

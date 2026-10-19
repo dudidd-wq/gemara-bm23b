@@ -41,13 +41,15 @@ const swMissing = swFiles.filter(f => f !== './' && !fs.existsSync(path.join(ROO
 ok('service-worker precache list matches files', !swMissing.length && files.size === swFiles.filter(f => f.startsWith('audio/')).length, swMissing.join(','));
 // חלק ב: קריינות
 {
-  const need = partB.units.flatMap(u => [u.id + '_intro', ...u.lines.map(l => `${u.id}_e${l.n}`)]);
-  const gate = JSON.parse(fs.existsSync(path.join(ROOT, 'tools/part_b_audio_gate.json')) ? fs.readFileSync(path.join(ROOT, 'tools/part_b_audio_gate.json'), 'utf8') : '{}');
-  const gOk = Object.keys(audioB).filter(c => /_g\d+$/.test(c));
-  ok('part B: Gemara-line audio only for lines that passed the gate / approved', gOk.every(c => gate[c] && ['pass', 'approved'].includes(gate[c].status)), gOk.length + ' line clips');
-  const miss = need.filter(c => !audioB[c] || !fs.existsSync(path.join(ROOT, audioB[c].file)));
+  const exam = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/part_b_exam.json'), 'utf8'));
+  const bestOf = c => Object.values(exam[c].takes).filter(t => !t.excluded).reduce((x, y) => (y.score > x.score || (y.score === x.score && (y.text || '').length < (x.text || '').length) ? y : x), { score: 0 });
+  const all = partB.units.flatMap(u => [u.id + '_intro', ...u.lines.flatMap(l => [`${u.id}_g${l.n}`, `${u.id}_e${l.n}`])]);
+  const want = all.filter(c => exam[c] && bestOf(c).score >= 9);
+  const wrong = Object.keys(audioB).filter(c => !exam[c] || audioB[c].file !== `audio/b/${bestOf(c).key}.mp3` || bestOf(c).score < 9);
+  ok('part B: only clips the external examiner scored ≥9 are published (best take of each)', !wrong.length && want.length === Object.keys(audioB).length, `${want.length}/${all.length} published; wrong=${wrong.slice(0, 5)}`);
+  const miss = want.filter(c => !audioB[c] || !fs.existsSync(path.join(ROOT, audioB[c].file)));
   const onDisk = fs.readdirSync(path.join(ROOT, 'audio/b')), used = new Set(Object.values(audioB).map(c => c.file));
-  ok(`part B narration: all ${need.length} intro+explanation clips (and ${Object.keys(audioB).length - need.length} gated line clips) exist, none unreferenced`, !miss.length && onDisk.every(f => used.has('audio/b/' + f)), miss.slice(0, 5).join(','));
+  ok(`part B narration: all ${want.length} passing clips exist, none unreferenced`, !miss.length && onDisk.every(f => used.has('audio/b/' + f)), miss.slice(0, 5).join(','));
   ok('part B narration is NOT precached (on-demand cache in SW)', !swFiles.some(f => f.startsWith('audio/b/')) && /AUDIO_B/.test(sw) && swFiles.includes('data/part_b_audio.json'));
   const big = onDisk.map(f => fs.statSync(path.join(ROOT, 'audio/b', f)).size).reduce((a, b) => a + b, 0);
   ok('part B narration small mono MP3 (total < 10MB)', big < 10e6, (big / 1e6).toFixed(1) + 'MB');
@@ -332,7 +334,10 @@ const goB = async (r) => { await page.goto(BASE + '#/' + r); await page.waitForF
     const r = { src: a && a.src, t: a && a.currentTime, playing: a && !a.paused }; U.stop(); return r;
   });
   const gWant = u1.lines.filter(l => audioB[`b1_g${l.n}`]).length;
-  ok('part B: 🔊 per explanation, and per Gemara line only where gated audio exists; clip plays', nPlay === gWant && nExpl === u1.lines.length && lineAudio.playing, `play=${nPlay}/${gWant} expl=${nExpl} ${JSON.stringify(lineAudio)}`);
+  const eWant = u1.lines.filter(l => audioB[`b1_e${l.n}`]).length;
+  ok('part B: 🔊 per explanation and per Gemara line only where passing audio exists; clip plays', nPlay === gWant && nExpl === eWant && lineAudio.playing, `play=${nPlay}/${gWant} expl=${nExpl}/${eWant} ${JSON.stringify(lineAudio)}`);
+  const seqIds = ['b1_intro', ...u1.lines.flatMap(l => [`b1_g${l.n}`, `b1_e${l.n}`])].filter(c => audioB[c]);
+  const lineOf = c => (/_[ge](\d+)$/.test(c) ? +c.match(/_[ge](\d+)$/)[1] - 1 : -1);
   const seqRes = await page.evaluate(async () => {
     const btn = document.getElementById('playUnit'); btn.click();
     const a = U._audio(); const wait = async (f, ms) => { const t0 = performance.now(); while (performance.now() - t0 < ms && !f()) await new Promise(r => setTimeout(r, 50)); return f(); };
@@ -345,7 +350,7 @@ const goB = async (r) => { await page.goto(BASE + '#/' + r); await page.waitForF
     const res = { first, second: a.src, hl, label: btn.textContent };
     btn.click(); await new Promise(r => setTimeout(r, 400)); res.stopped = a.paused; return res;
   });
-  ok('part B: "play whole unit" plays intro → line 1 in sequence, highlights the line, stop works', seqRes.first.endsWith(audioB['b1_intro'].file) && seqRes.second.endsWith((audioB['b1_g1'] || audioB['b1_e1']).file) && seqRes.hl === 0 && seqRes.stopped, JSON.stringify(seqRes));
+  ok('part B: "play whole unit" plays intro → line 1 in sequence, highlights the line, stop works', seqRes.first.endsWith(audioB[seqIds[0]].file) && seqRes.second.endsWith(audioB[seqIds[1]].file) && seqRes.hl === lineOf(seqIds[1]) && seqRes.stopped, JSON.stringify(seqRes));
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.click('#learnDone');
   let pb = await page.evaluate(() => JSON.parse(localStorage.getItem('bm23b_progress_v1')).activities);
@@ -417,7 +422,8 @@ ok('print answer key fits one A4 page', pages === 1, 'pages=' + pages);
 await go('');
 const swOk = await page.evaluate(async () => { const r = await navigator.serviceWorker.ready; return !!r.active; });
 await page.waitForTimeout(1500);
-await page.evaluate(async (f) => { await fetch(f, { headers: { Range: 'bytes=0-' } }).then(r => r.arrayBuffer()); }, audioB['b3_e1'].file);
+const offId = audioB['b3_e1'] ? 'b3_e1' : Object.keys(audioB).find(k => /^b3_/.test(k)) || Object.keys(audioB)[0];
+await page.evaluate(async (f) => { await fetch(f, { headers: { Range: 'bytes=0-' } }).then(r => r.arrayBuffer()); }, audioB[offId].file);
 await page.waitForTimeout(500);
 await ctx.setOffline(true);
 await page.reload(); await page.waitForSelector('#app > :not(.loading)', { timeout: 8000 }).catch(() => {});
@@ -425,7 +431,7 @@ const offline = await page.evaluate(() => document.querySelectorAll('.tile').len
 await go('flashcards').catch(() => {});
 await goB('b/b3/learn').catch(() => {});
 const offB = await page.evaluate(() => document.querySelectorAll('#bLines .gline').length);
-const offBA = await page.evaluate(async (f) => new Promise(r => { const a = new Audio(); a.onloadedmetadata = () => r(a.duration); a.onerror = () => r(-1); a.src = f; }), audioB['b3_e1'].file);
+const offBA = await page.evaluate(async (f) => new Promise(r => { const a = new Audio(); a.onloadedmetadata = () => r(a.duration); a.onerror = () => r(-1); a.src = f; }), audioB[offId].file);
 const offAudio = await page.evaluate(async (f) => new Promise(r => { const a = new Audio(); a.onloadedmetadata = () => r(a.duration); a.onerror = () => r(-1); a.src = f; }), [...files][0]);
 await ctx.setOffline(false);
 ok('PWA: service worker active, site + audio + part B work offline', swOk && offline >= 10 && offAudio > 0 && offB > 0 && offBA > 0, `tiles=${offline} audio=${offAudio} partB-lines=${offB} partB-audio(on-demand)=${offBA}`);

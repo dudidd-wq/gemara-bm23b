@@ -1,0 +1,86 @@
+{
+ "known_bad_words (Scribe spot-check of original)": {
+  "b1_g4 דְּדָפְקָא": {
+   "original_word": 0.75,
+   "original_line": 8.54,
+   "best_word": 0.938,
+   "best_line": 9.62
+  },
+  "b3_g6 בְּרַקְתָּא": {
+   "original_word": 1.0,
+   "original_line": 9.84,
+   "best_word": 1.0,
+   "best_line": 9.84
+  },
+  "b3_g9 אִיכָּא": {
+   "original_word": 0.267,
+   "original_line": 6.05,
+   "best_word": 1.0,
+   "best_line": 10.0
+  },
+  "b3_g15 לֵימָא": {
+   "original_word": 0.84,
+   "original_line": 8.77,
+   "best_word": 0.84,
+   "best_line": 8.77
+  },
+  "b4_g4 דָמֵי": {
+   "original_word": 0.72,
+   "original_line": 5.93,
+   "best_word": 1.0,
+   "best_line": 9.25
+  },
+  "b8_g1 אִיבַּעְיָא": {
+   "original_word": 0.75,
+   "original_line": 8.12,
+   "best_word": 0.9,
+   "best_line": 8.25
+  },
+  "b5_g1 דְּאָמַר": {
+   "original_word": 0.9,
+   "original_line": 9.37,
+   "best_word": 1.0,
+   "best_line": 9.84
+  },
+  "b9_g4 דְּאָזֵיל": {
+   "original_word": 0.886,
+   "original_line": 7.93,
+   "best_word": 1.0,
+   "best_line": 9.85
+  },
+  "b5_g9 דְכַּסְפָּא": {
+   "original_word": 0.825,
+   "original_line": 8.99,
+   "best_word": 1.0,
+   "best_line": 9.88
+  }
+ },
+ "original_niqqud_gemara (Dudi: bad)": {
+  "n": 111,
+  "mean": 9.43,
+  "median": 9.75,
+  "ge9": 94,
+  "lt5": 1
+ },
+ "previous_published_gemara (Scribe gate)": {
+  "n": 109,
+  "mean": 9.5,
+  "median": 9.77,
+  "ge9": 93,
+  "lt5": 1
+ },
+ "explanations_intros_current": {
+  "n": 122,
+  "mean": 9.83,
+  "median": 10.0,
+  "ge9": 117,
+  "lt5": 0
+ },
+ "mismatched_text (should be ~0)": {
+  "n": 234,
+  "mean": 1.2,
+  "median": 1.23,
+  "ge9": 0,
+  "lt5": 233
+ }
+}
